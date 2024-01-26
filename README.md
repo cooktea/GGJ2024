@@ -12,3 +12,4 @@
 - 游戏玩法及策划文档: [【腾讯文档】Global Game Jam 2024](https://docs.qq.com/doc/DWVVJcGJjbFRmc0Fr)
 ### 团队
 - 策划 超大型呆萌
+- 策划 BWMaple
