@@ -58,11 +58,11 @@ public class MouseController : MonoBehaviour, IMouseController
         Debug.Log("OnLeftButtonDown");
         pathPoints.Clear();
         pathPoints.Add(Vector3ToVector2(Input.mousePosition));
-        //pointObjects.Add(CreatePathPoint(Input.mousePosition));
     }
 
     public void OnLeftButtonHold()
     {
+        lineRenderer.enabled = true;
         if(Time.time > lastCheckTs + checkTick)
         {
             lastCheckTs = Time.time;
@@ -70,7 +70,6 @@ public class MouseController : MonoBehaviour, IMouseController
             if ((Vector3ToVector2(Input.mousePosition) - lastPoint).magnitude > 10)
             {
                 pathPoints.Add(Vector3ToVector2 (Input.mousePosition));
-                //pointObjects.Add(CreatePathPoint(Input.mousePosition));
 
                 lineRenderer.positionCount = pathPoints.Count;
                 lineRenderer.SetPositions(pathPoints.Select(p =>
@@ -89,13 +88,10 @@ public class MouseController : MonoBehaviour, IMouseController
         Iball.SetInitSpeed(200);
         Iball.SetPath(pathPoints);
         Iball.Shoot();
-        //foreach (var point in pointObjects)
-        //{
-        //    //Destroy(point);
-        //}
-        //pointObjects.Clear();
+
         lineRenderer.positionCount = 0;
         lineRenderer.SetPositions(new Vector3[] { });
+        lineRenderer.enabled = false;
         Debug.Log("OnLeftButtonRelease");
         Debug.Log(pathPoints.Count);
     }
