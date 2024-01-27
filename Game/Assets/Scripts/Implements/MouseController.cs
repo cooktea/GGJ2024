@@ -73,7 +73,11 @@ public class MouseController : MonoBehaviour, IMouseController
                 //pointObjects.Add(CreatePathPoint(Input.mousePosition));
 
                 lineRenderer.positionCount = pathPoints.Count;
-                lineRenderer.SetPositions(pathPoints.Select(p => new Vector3(p.x, p.y, 1f)).ToArray());
+                lineRenderer.SetPositions(pathPoints.Select(p =>
+                {
+                    var linePos = Camera.main.ScreenToWorldPoint(new Vector3(p.x, p.y, 1f));
+                    return new Vector3(linePos.x, linePos.y, 1f);
+                }).ToArray());
             }
         }
         Debug.Log("OnLeftButtonHold");
