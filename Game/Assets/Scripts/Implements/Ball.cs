@@ -5,10 +5,12 @@ using UnityEngine;
 public class Ball : MonoBehaviour, IBall
 {
     GameObject Owner;
+    IPlayer ownerPlayer => Owner?.GetComponent<IPlayer>();
 
     [Header("Movement")]
     [SerializeField] float speed;
     [SerializeField] Vector3 dir;
+    [SerializeField] float noContactTime = 0.5f;
     Queue<Vector2> wayPoint = new Queue<Vector2>();
     Vector2 nextWayPoint = Vector2.zero;
 
@@ -67,13 +69,15 @@ public class Ball : MonoBehaviour, IBall
         int num = ballCollider.OverlapCollider(contactFilter, others);
         if (num > 0)
         {
-            foreach (var item in others)
+            for(int i = 0; i < num; i++)
             {
-                var player = item.GetComponentInParent<IPlayer>();
+                var player = others[i].GetComponentInParent<IPlayer>();
                 if (player is not null)
                 {
                     player.OnCatchBall(gameObject);
-                    Owner = item.gameObject;
+                    Owner = others[i].gameObject;
+                    state = BallState.Held;
+                    break;
                 }
             }
         }
@@ -83,7 +87,9 @@ public class Ball : MonoBehaviour, IBall
         }
     }
 
-    void StateHeld() { }
+    void StateHeld() {
+        transform.position = Owner.transform.position + (Vector3)Random.insideUnitCircle;
+    }
 
     #region IBall
     public GameObject GetOwner()
@@ -93,7 +99,17 @@ public class Ball : MonoBehaviour, IBall
 
     public void Shoot()
     {
-        throw new System.NotImplementedException();
+        Owner= null;
+        state = BallState.Free;
+        StartCoroutine(resetContact());
+    }
+
+    IEnumerator resetContact()
+    {
+        var filter = contactFilter;
+        contactFilter = contactFilter.NoFilter();
+        yield return new WaitForSeconds(noContactTime);
+        contactFilter = filter;
     }
 
     public void SetPath(List<Vector2> pathPoints)
