@@ -41,8 +41,8 @@ public class Ball : MonoBehaviour, IBall
     // Update is called once per frame
     void Update()
     {
-        rb.velocity = Vector2.right * speed;
-        CheckIsScore();
+        //rb.velocity = Vector2.right * speed;
+        //CheckIsScore();
     }
 
     private void FreeMove(float dt)
@@ -142,10 +142,6 @@ public class Ball : MonoBehaviour, IBall
 
     public bool CheckIsScore()
     {
-        var filter = new ContactFilter2D();
-        var mask = new LayerMask();
-        filter.layerMask = mask;
-        ballCollider.OverlapCollider(filter, others);
         return isScore;
     }
 
