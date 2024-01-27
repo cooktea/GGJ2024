@@ -21,7 +21,7 @@ public interface IPlayer
         AI,
     }
 
-    SharedVariable<bool> HoldBall { get; }
+    bool HoldBall { get; }
 
     bool OpponentHoldBall { get; }
 

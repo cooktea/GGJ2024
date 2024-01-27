@@ -40,6 +40,8 @@ public class Ball : MonoBehaviour, IBall
     void FixedUpdate()
     {
         DoMove(Time.deltaTime);
+        Debug.Log(GetOwner());
+        Debug.Log(playersInCollied.Count);
     }
 
     private void FreeMove(float dt)

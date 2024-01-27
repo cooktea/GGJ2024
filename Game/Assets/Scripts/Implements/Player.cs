@@ -8,8 +8,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour, IPlayer
 {
-    public SharedVariable<bool> HoldBall {  get; private set; }
-
+    public bool HoldBall {  get; private set; }
     public bool OpponentHoldBall {  get; private set; }
 
     public IPlayer.PlayerSide Side => side;
@@ -20,7 +19,7 @@ public class Player : MonoBehaviour, IPlayer
 
     public void OnCatchBall(GameObject ball)
     {
-        HoldBall.SetValue(true);
+        HoldBall = (true);
         BallRef = ball.GetComponent<IBall>();
     }
 
@@ -47,6 +46,6 @@ public class Player : MonoBehaviour, IPlayer
 
     public void Shoot()
     {
-        HoldBall.SetValue(false);
+        HoldBall = (false);
     }
 }
