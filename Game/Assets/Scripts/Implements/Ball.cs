@@ -34,7 +34,6 @@ public class Ball : MonoBehaviour, IBall
     {
         rb = GetComponent<Rigidbody2D>();
         ballCollider = GetComponent<CircleCollider2D>();
-        state = BallState.Free;
         wayPoints.Clear();
     }
 
@@ -55,7 +54,7 @@ public class Ball : MonoBehaviour, IBall
                 nextWayPoint = wayPoint;
             }
         }
-        dir = (Vector3)nextWayPoint - transform.position;
+        dir = (nextWayPoint - (Vector2)transform.position).normalized;
         rb.velocity = speed * dt * dir;
     }
 

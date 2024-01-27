@@ -75,7 +75,10 @@ public class MouseController : MonoBehaviour, IMouseController
 
     public void OnLeftButtonRelease()
     {
-        GM.ball.GetComponent<Ball>().SetPath(pathPoints);
+        var Iball = GM.ball.GetComponent<IBall>();
+        Iball.SetInitSpeed(200);
+        Iball.SetPath(pathPoints);
+        Iball.Shoot();
         foreach (var point in pointObjects)
         {
             Destroy(point);

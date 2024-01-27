@@ -152,6 +152,7 @@ public class GameManager : MonoBehaviour, IGameManager
         var holder = teammates[Random.Range(0, teammates.Count)];
         ball.GetComponent<Ball>().SetOwner(holder);
         holder.GetComponent<IPlayer>().OnCatchBall(ball);
+        ball.transform.position = holder.transform.position;
     }
 
     void Start()
