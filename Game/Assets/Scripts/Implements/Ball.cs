@@ -6,7 +6,8 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour, IBall
 {
-    GameObject Owner;
+    [SerializeField] GameObject Owner;
+    [SerializeField] BallState state;
     IPlayer ownerPlayer => Owner?.GetComponent<IPlayer>();
     Rigidbody2D rb;
 
@@ -14,8 +15,8 @@ public class Ball : MonoBehaviour, IBall
     [SerializeField] float speed;
     [SerializeField] Vector3 dir;
     [SerializeField] float noContactTime = 0.5f;
-    Queue<Vector2> wayPoint = new Queue<Vector2>();
-    Vector2 nextWayPoint = Vector2.zero;
+    [SerializeField] Queue<Vector2> wayPoints = new Queue<Vector2>();
+    [SerializeField] Vector2 nextWayPoint = Vector2.zero;
 
     [Header("Collision Info")]
     [SerializeField] ContactFilter2D contactFilter;
@@ -26,7 +27,6 @@ public class Ball : MonoBehaviour, IBall
         Free,
         Held,
     }
-    BallState state;
 
 
     // Start is called before the first frame update
@@ -35,25 +35,27 @@ public class Ball : MonoBehaviour, IBall
         rb = GetComponent<Rigidbody2D>();
         ballCollider = GetComponent<CircleCollider2D>();
         state = BallState.Free;
-        wayPoint.Clear();
+        wayPoints.Clear();
     }
 
     // Update is called once per frame
     void Update()
     {
+        DoMove(Time.deltaTime);
     }
 
     private void FreeMove(float dt)
     {
         var dis = Vector3.Distance(transform.position, nextWayPoint);
+        Vector2 wayPoint;
         if (dis <= float.Epsilon)
         {
-            if (wayPoint.TryDequeue(out nextWayPoint))
+            if (wayPoints.TryDequeue(out wayPoint))
             {
-                dir = (Vector3)nextWayPoint - transform.position;
+                nextWayPoint = wayPoint;
             }
         }
-
+        dir = (Vector3)nextWayPoint - transform.position;
         rb.velocity = speed * dt * dir;
     }
 
@@ -117,7 +119,7 @@ public class Ball : MonoBehaviour, IBall
 
     public void SetPath(List<Vector2> pathPoints)
     {
-        wayPoint = new Queue<Vector2>(pathPoints);
+        wayPoints = new Queue<Vector2>(pathPoints);
     }
 
     public float SetInitSpeed(float speed)
