@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BehaviorDesigner.Runtime;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,12 +11,27 @@ public interface IPlayer
 {
     public enum PlayerType
     {
-        TeamMate = 0x01,
-        Enemy = 0x01 << 1,
-        Holder = 0x01 << 2,     // 持球的人
-        GoalKeeper = 0x01 << 3, // 守门员
+        Player,
+        GoalKeeper,
     }
+
+    public enum PlayerSide
+    {
+        Human,
+        AI,
+    }
+
+    SharedVariable<bool> HoldBall { get; }
+
+    bool OpponentHoldBall { get; }
+
+    public PlayerSide Side { get; }
+
+    public IBall BallRef { get; }
     void TryRefreshActionTree();
     void TryDoActionTree();
     public void OnCatchBall(GameObject ball);
+    public void OnCatchEnemy(GameObject ball);
+
+    public void Shoot();
 }

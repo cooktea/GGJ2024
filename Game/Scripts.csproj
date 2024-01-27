@@ -66,6 +66,7 @@
     <Compile Include="Assets\Scripts\Interfaces\IPlayer.cs" />
     <Compile Include="Assets\Scripts\Implements\Enemy.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IMouseController.cs" />
+    <Compile Include="Assets\Scripts\Implements\Player.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IGameManager.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IEnemy.cs" />
     <Compile Include="Assets\Scripts\Implements\TeamMate.cs" />

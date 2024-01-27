@@ -21,7 +21,7 @@ public class Ball : MonoBehaviour, IBall
     Queue<Vector2> wayPoints = new Queue<Vector2>();
 
     [Header("Collision Info")]
-    [SerializeField] ContactFilter2D contactFilter;
+    [SerializeField] List<GameObject> playersInCollied;
     Collider2D[] others = new Collider2D[10];
     Collider2D ballCollider;
     RectTransform rectTransform;
@@ -50,10 +50,10 @@ public class Ball : MonoBehaviour, IBall
 
     private void FreeMove(float dt)
     {
-		var ballPosition = new Vector2(rectTransform.anchoredPosition.x, rectTransform.anchoredPosition.y + 1080);
-		var dis = Vector2.Distance(ballPosition, nextWayPoint);
+        var ballPosition = new Vector2(rectTransform.anchoredPosition.x, rectTransform.anchoredPosition.y + Screen.height);
+        var dis = Vector2.Distance(ballPosition, nextWayPoint);
         Vector2 wayPoint;
-        if (dis <= 10f)
+        if (dis <= 2f)
         {
             if (wayPoints.TryDequeue(out wayPoint))
             {
@@ -62,30 +62,22 @@ public class Ball : MonoBehaviour, IBall
             }
         }
 
-		dir = (nextWayPoint - ballPosition).normalized;
-		rb.velocity = speed * dt * dir;
+        dir = (nextWayPoint - ballPosition).normalized;
+        rb.velocity = speed * dt * dir;
     }
 
     void StateFree(float dt)
     {
-        int num = ballCollider.OverlapCollider(contactFilter, others);
-        if (num > 0)
+        if (this.playersInCollied.Count > 0)
         {
-            for (int i = 0; i < num; i++)
-            {
-                var player = others[i].GetComponentInParent<IPlayer>();
-                if (player is not null)
-                {
-                    player.OnCatchBall(gameObject);
-                    Owner = others[i].gameObject;
-                    state = BallState.Held;
-                    continue;
-                }
-            }
+            var p = this.playersInCollied[0];
+            p.GetComponent<IPlayer>().OnCatchBall(gameObject);
+            this.Owner = p;
+            state = BallState.Held;
         }
         else
         {
-            FreeMove(dt);
+            //FreeMove(dt);
         }
     }
 
@@ -118,13 +110,10 @@ public class Ball : MonoBehaviour, IBall
 
     IEnumerator resetContact()
     {
-        var filter = contactFilter;
-        var mask = contactFilter.layerMask;
-        mask = LayerMask.NameToLayer("None");
-        filter.layerMask = mask;
+        ballCollider.enabled = false;
         // todo: fix time
         yield return new WaitForSeconds(noContactTime);
-        contactFilter = filter;
+        ballCollider.enabled = true;
     }
 
     public void SetPath(List<Vector2> pathPoints)
@@ -181,4 +170,22 @@ public class Ball : MonoBehaviour, IBall
     bool isOutLine;
     bool isScore;
     #endregion IBall
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        IPlayer p = collision.GetComponent<IPlayer>();
+        if (p != null)
+        {
+            this.playersInCollied.Add(collision.gameObject);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        IPlayer p = collision.GetComponent<IPlayer>();
+        if (p != null)
+        {
+            this.playersInCollied.Remove(collision.gameObject);
+        }
+    }
 }
