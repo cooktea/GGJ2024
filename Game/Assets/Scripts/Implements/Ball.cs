@@ -1,11 +1,14 @@
+using PlasticGui;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Ball : MonoBehaviour, IBall
 {
-    GameObject Owner;
+    GameObject Owner; 
     IPlayer ownerPlayer => Owner?.GetComponent<IPlayer>();
+    Rigidbody2D rb;
 
     [Header("Movement")]
     [SerializeField] float speed;
@@ -29,6 +32,7 @@ public class Ball : MonoBehaviour, IBall
     // Start is called before the first frame update
     void Start()
     {
+        rb = GetComponent<Rigidbody2D>();
         ballCollider = GetComponent<CircleCollider2D>();
         state = BallState.Free;
         wayPoint.Clear();
@@ -37,20 +41,11 @@ public class Ball : MonoBehaviour, IBall
     // Update is called once per frame
     void Update()
     {
-        switch (state)
-        {
-            case BallState.Free:
-                StateFree();
-                break;
-            case BallState.Held:
-                StateHeld();
-                break;
-            default:
-                break;
-        }
+        //rb.velocity = Vector2.right * speed;
+        //CheckIsScore();
     }
 
-    private void FreeMove()
+    private void FreeMove(float dt)
     {
         var dis = Vector3.Distance(transform.position, nextWayPoint);
         if (dis <= float.Epsilon)
@@ -61,10 +56,10 @@ public class Ball : MonoBehaviour, IBall
             }
         }
 
-        transform.position = speed * Time.deltaTime * dir;
+        rb.velocity = speed * dt * dir;
     }
 
-    void StateFree()
+    void StateFree(float dt)
     {
         int num = ballCollider.OverlapCollider(contactFilter, others);
         if (num > 0)
@@ -77,18 +72,18 @@ public class Ball : MonoBehaviour, IBall
                     player.OnCatchBall(gameObject);
                     Owner = others[i].gameObject;
                     state = BallState.Held;
-                    break;
+                    continue;
                 }
             }
         }
         else
         {
-            FreeMove();
+            FreeMove(dt);
         }
     }
 
-    void StateHeld() {
-        transform.position = Owner.transform.position + (Vector3)Random.insideUnitCircle;
+    void StateHeld(float dt) {
+        transform.position = Owner.transform.position;
     }
 
     public void SetOwner(GameObject owner)
@@ -105,7 +100,7 @@ public class Ball : MonoBehaviour, IBall
 
     public void Shoot()
     {
-        Owner= null;
+        Owner = null;
         state = BallState.Free;
         StartCoroutine(resetContact());
     }
@@ -114,6 +109,7 @@ public class Ball : MonoBehaviour, IBall
     {
         var filter = contactFilter;
         contactFilter = contactFilter.NoFilter();
+        // todo: fix time
         yield return new WaitForSeconds(noContactTime);
         contactFilter = filter;
     }
@@ -131,23 +127,45 @@ public class Ball : MonoBehaviour, IBall
 
     public void DoMove(float deltaTime)
     {
-        throw new System.NotImplementedException();
+        switch (state)
+        {
+            case BallState.Free:
+                StateFree(deltaTime);
+                break;
+            case BallState.Held:
+                StateHeld(deltaTime);
+                break;
+            default:
+                break;
+        }
     }
 
     public bool CheckIsScore()
     {
-        throw new System.NotImplementedException();
+        return isScore;
     }
 
     public bool CheckOutLine()
     {
-        throw new System.NotImplementedException();
+        return isOutLine;
     }
 
     public bool CheckCatched()
     {
-        throw new System.NotImplementedException();
+        return ownerPlayer != null;
     }
 
+    public void SetOutLine(bool value)
+    {
+        isOutLine = value;
+    }
+
+    public void SetIsScore(bool value)
+    {
+        isScore = value;
+    }
+
+    bool isOutLine;
+    bool isScore;
     #endregion IBall
 }
