@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour, IBall
 {
-    GameObject Owner; 
+    GameObject Owner;
     IPlayer ownerPlayer => Owner?.GetComponent<IPlayer>();
     Rigidbody2D rb;
 
@@ -41,8 +41,6 @@ public class Ball : MonoBehaviour, IBall
     // Update is called once per frame
     void Update()
     {
-        //rb.velocity = Vector2.right * speed;
-        //CheckIsScore();
     }
 
     private void FreeMove(float dt)
@@ -64,7 +62,7 @@ public class Ball : MonoBehaviour, IBall
         int num = ballCollider.OverlapCollider(contactFilter, others);
         if (num > 0)
         {
-            for(int i = 0; i < num; i++)
+            for (int i = 0; i < num; i++)
             {
                 var player = others[i].GetComponentInParent<IPlayer>();
                 if (player is not null)
@@ -82,7 +80,8 @@ public class Ball : MonoBehaviour, IBall
         }
     }
 
-    void StateHeld(float dt) {
+    void StateHeld(float dt)
+    {
         transform.position = Owner.transform.position;
     }
 
@@ -108,7 +107,9 @@ public class Ball : MonoBehaviour, IBall
     IEnumerator resetContact()
     {
         var filter = contactFilter;
-        contactFilter = contactFilter.NoFilter();
+        var mask = contactFilter.layerMask;
+        mask = LayerMask.NameToLayer("None");
+        filter.layerMask = mask;
         // todo: fix time
         yield return new WaitForSeconds(noContactTime);
         contactFilter = filter;
