@@ -1,4 +1,5 @@
 using PlasticGui;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,13 +16,15 @@ public class Ball : MonoBehaviour, IBall
     [SerializeField] float speed;
     [SerializeField] Vector3 dir;
     [SerializeField] float noContactTime = 0.5f;
-    [SerializeField] Queue<Vector2> wayPoints = new Queue<Vector2>();
-    [SerializeField] Vector2 nextWayPoint = Vector2.zero;
+    [SerializeField] Vector2 nextWayPoint;
+    [SerializeField] Vector2[] waypointList;
+    Queue<Vector2> wayPoints = new Queue<Vector2>();
 
     [Header("Collision Info")]
     [SerializeField] ContactFilter2D contactFilter;
     Collider2D[] others = new Collider2D[10];
     Collider2D ballCollider;
+    RectTransform rectTransform;
     enum BallState
     {
         Free,
@@ -32,6 +35,7 @@ public class Ball : MonoBehaviour, IBall
     // Start is called before the first frame update
     void Start()
     {
+        rectTransform = GetComponent<RectTransform>();
         rb = GetComponent<Rigidbody2D>();
         ballCollider = GetComponent<CircleCollider2D>();
         wayPoints.Clear();
@@ -41,20 +45,23 @@ public class Ball : MonoBehaviour, IBall
     void Update()
     {
         DoMove(Time.deltaTime);
+        waypointList = wayPoints.ToArray();
     }
 
     private void FreeMove(float dt)
     {
-        var dis = Vector3.Distance(transform.position, nextWayPoint);
+        var dis = Vector2.Distance(transform.position, nextWayPoint);
         Vector2 wayPoint;
-        if (dis <= float.Epsilon)
+        if (dis <= 1.0F)
         {
             if (wayPoints.TryDequeue(out wayPoint))
             {
                 nextWayPoint = wayPoint;
+                Debug.Log(nextWayPoint);
             }
         }
-        dir = (nextWayPoint - (Vector2)transform.position).normalized;
+        
+        dir = (nextWayPoint - (Vector2)rectTransform.anchoredPosition3D).normalized;
         rb.velocity = speed * dt * dir;
     }
 
@@ -101,6 +108,8 @@ public class Ball : MonoBehaviour, IBall
     public void Shoot()
     {
         Owner = null;
+        nextWayPoint = wayPoints.First();
+        wayPoints.Dequeue();
         state = BallState.Free;
         StartCoroutine(resetContact());
     }

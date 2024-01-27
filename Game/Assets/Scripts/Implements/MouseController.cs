@@ -69,7 +69,7 @@ public class MouseController : MonoBehaviour, IMouseController
             var lastPoint = pathPoints[pathPoints.Count - 1];
             if ((Vector3ToVector2(Input.mousePosition) - lastPoint).magnitude > 10)
             {
-                pathPoints.Add(Vector3ToVector2 (Input.mousePosition));
+                pathPoints.Add(Vector3ToVector2(Input.mousePosition));
 
                 lineRenderer.positionCount = pathPoints.Count;
                 lineRenderer.SetPositions(pathPoints.Select(p =>
