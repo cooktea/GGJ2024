@@ -69,7 +69,7 @@ public class Ball : MonoBehaviour, IBall
                 var player = others[i].GetComponentInParent<IPlayer>();
                 if (player is not null)
                 {
-                    player.OnCatchBall();
+                    player.OnCatchBall(gameObject);
                     Owner = others[i].gameObject;
                     state = BallState.Held;
                     continue;
@@ -84,6 +84,12 @@ public class Ball : MonoBehaviour, IBall
 
     void StateHeld(float dt) {
         transform.position = Owner.transform.position;
+    }
+
+    public void SetOwner(GameObject owner)
+    {
+        Owner = owner;
+        state = BallState.Held;
     }
 
     #region IBall
