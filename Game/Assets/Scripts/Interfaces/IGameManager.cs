@@ -12,5 +12,6 @@ public interface IGameManager
     public void BallIn();
     public int GetLastGameSecond();
     public void StartBulletTime();
+    public void EndBulletTime();
     public void NextRound();
 }

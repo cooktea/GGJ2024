@@ -9,7 +9,7 @@ using UnityEngine;
 public interface IMouseController
 {
     public void OnEnterPlayer(GameObject player);
-    public void OnExitPlayer(GameObject player);
+    public void OnExitPlayer();
     public void OnLeftButtonDown();
     public void OnLeftButtonHold();
     public void OnLeftButtonRelease();
