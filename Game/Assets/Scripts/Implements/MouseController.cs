@@ -51,7 +51,7 @@ public class MouseController : MonoBehaviour, IMouseController
 		{
 			lastCheckTs = Time.time;
 			var lastPoint = pathPoints[pathPoints.Count - 1];
-			if ((Vector3ToVector2(Input.mousePosition) - lastPoint).magnitude > 1)
+			if ((Vector3ToVector2(Input.mousePosition) - lastPoint).sqrMagnitude > 3f)
 			{
 				AddPointToPath(Input.mousePosition);
 
@@ -70,7 +70,7 @@ public class MouseController : MonoBehaviour, IMouseController
 	public void OnLeftButtonRelease()
 	{
 		var Iball = GM.ball.GetComponent<IBall>();
-		Iball.SetInitSpeed(200);
+		Iball.SetInitSpeed(10);
 		Iball.SetPath(pathPoints);
 		Iball.Shoot();
 
