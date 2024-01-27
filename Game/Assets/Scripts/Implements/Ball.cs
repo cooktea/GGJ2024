@@ -1,5 +1,3 @@
-using PlasticGui;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,14 +15,12 @@ public class Ball : MonoBehaviour, IBall
     [SerializeField] Vector3 dir;
     [SerializeField] float noContactTime = 0.5f;
     [SerializeField] Vector2 nextWayPoint;
-    [SerializeField] Vector2[] waypointList;
     Queue<Vector2> wayPoints = new Queue<Vector2>();
 
     [Header("Collision Info")]
     [SerializeField] ContactFilter2D contactFilter;
     Collider2D[] others = new Collider2D[10];
     Collider2D ballCollider;
-    RectTransform rectTransform;
     enum BallState
     {
         Free,
@@ -35,7 +31,6 @@ public class Ball : MonoBehaviour, IBall
     // Start is called before the first frame update
     void Start()
     {
-        rectTransform = GetComponent<RectTransform>();
         rb = GetComponent<Rigidbody2D>();
         ballCollider = GetComponent<CircleCollider2D>();
         wayPoints.Clear();
@@ -45,15 +40,14 @@ public class Ball : MonoBehaviour, IBall
     void FixedUpdate()
     {
         DoMove(Time.deltaTime);
-        waypointList = wayPoints.ToArray();
     }
 
     private void FreeMove(float dt)
     {
-		var ballPosition = new Vector2(rectTransform.anchoredPosition.x, rectTransform.anchoredPosition.y + 1080);
+        var ballPosition = new Vector2(transform.position.x, transform.position.y);
 		var dis = Vector2.Distance(ballPosition, nextWayPoint);
         Vector2 wayPoint;
-        if (dis <= 10f)
+        if (dis <= 1f)
         {
             if (wayPoints.TryDequeue(out wayPoint))
             {
