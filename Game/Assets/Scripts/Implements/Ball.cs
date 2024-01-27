@@ -45,9 +45,9 @@ public class Ball : MonoBehaviour, IBall
     private void FreeMove(float dt)
     {
         var ballPosition = new Vector2(transform.position.x, transform.position.y);
-		var dis = Vector2.Distance(ballPosition, nextWayPoint);
+		var dis = Vector2.SqrMagnitude(ballPosition - nextWayPoint);
         Vector2 wayPoint;
-        if (dis <= 1f)
+        if (dis <= 0.01f)
         {
             if (wayPoints.TryDequeue(out wayPoint))
             {
