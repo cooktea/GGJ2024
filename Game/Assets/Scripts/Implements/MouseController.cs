@@ -43,19 +43,19 @@ public class MouseController : MonoBehaviour, IMouseController
 
     public void OnEnterPlayer(GameObject player)
     {
-        Debug.Log("OnEnterPlayer");
+        //Debug.Log("OnEnterPlayer");
         currentPlayer = player;
     }
 
     public void OnExitPlayer()
     {
-        Debug.Log("OnExitPlayer");
+        //Debug.Log("OnExitPlayer");
         currentPlayer = null;
     }
 
     public void OnLeftButtonDown()
     {
-        Debug.Log("OnLeftButtonDown");
+        //Debug.Log("OnLeftButtonDown");
         pathPoints.Clear();
         pathPoints.Add(Vector3ToVector2(Input.mousePosition));
     }
@@ -67,7 +67,7 @@ public class MouseController : MonoBehaviour, IMouseController
         {
             lastCheckTs = Time.time;
             var lastPoint = pathPoints[pathPoints.Count - 1];
-            if ((Vector3ToVector2(Input.mousePosition) - lastPoint).magnitude > 10)
+            if ((Vector3ToVector2(Input.mousePosition) - lastPoint).magnitude > 1)
             {
                 pathPoints.Add(Vector3ToVector2(Input.mousePosition));
 
@@ -79,7 +79,7 @@ public class MouseController : MonoBehaviour, IMouseController
                 }).ToArray());
             }
         }
-        Debug.Log("OnLeftButtonHold");
+        //Debug.Log("OnLeftButtonHold");
     }
 
     public void OnLeftButtonRelease()
@@ -92,8 +92,8 @@ public class MouseController : MonoBehaviour, IMouseController
         lineRenderer.positionCount = 0;
         lineRenderer.SetPositions(new Vector3[] { });
         lineRenderer.enabled = false;
-        Debug.Log("OnLeftButtonRelease");
-        Debug.Log(pathPoints.Count);
+        //Debug.Log("OnLeftButtonRelease");
+        //Debug.Log(pathPoints.Count);
     }
 
     public void OnMouseMove(Vector2 oldPosition, Vector2 newPosition)

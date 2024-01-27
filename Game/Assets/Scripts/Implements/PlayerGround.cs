@@ -26,7 +26,7 @@ public class PlayerGround : MonoBehaviour
         {
             ball.SetOutLine(true);
             isRestting = true;
-            Debug.Log("Is out line!");
+            //Debug.Log("Is out line!");
         }
     }
 }

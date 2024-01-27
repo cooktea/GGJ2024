@@ -42,7 +42,7 @@ public class Ball : MonoBehaviour, IBall
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         DoMove(Time.deltaTime);
         waypointList = wayPoints.ToArray();
@@ -50,9 +50,10 @@ public class Ball : MonoBehaviour, IBall
 
     private void FreeMove(float dt)
     {
-        var dis = Vector2.Distance(transform.position, nextWayPoint);
+		var ballPosition = new Vector2(rectTransform.anchoredPosition.x, rectTransform.anchoredPosition.y + 1080);
+		var dis = Vector2.Distance(ballPosition, nextWayPoint);
         Vector2 wayPoint;
-        if (dis <= 1.0F)
+        if (dis <= 10f)
         {
             if (wayPoints.TryDequeue(out wayPoint))
             {
@@ -60,9 +61,9 @@ public class Ball : MonoBehaviour, IBall
                 Debug.Log(nextWayPoint);
             }
         }
-        
-        dir = (nextWayPoint - (Vector2)rectTransform.anchoredPosition3D).normalized;
-        rb.velocity = speed * dt * dir;
+
+		dir = (nextWayPoint - ballPosition).normalized;
+		rb.velocity = speed * dt * dir;
     }
 
     void StateFree(float dt)
@@ -107,8 +108,9 @@ public class Ball : MonoBehaviour, IBall
 
     public void Shoot()
     {
+        Debug.Log(string.Join(" ", wayPoints.Take(5)));
         Owner = null;
-        nextWayPoint = wayPoints.First();
+        nextWayPoint = wayPoints.Skip(1).First();
         wayPoints.Dequeue();
         state = BallState.Free;
         StartCoroutine(resetContact());
