@@ -13,5 +13,5 @@ public interface IMouseController
     public void OnLeftButtonDown();
     public void OnLeftButtonHold();
     public void OnLeftButtonRelease();
-    public void OnMouseMove(Vector2 oldPosition, Vector2 newPosition);
+    //public void OnMouseMove(Vector2 oldPosition, Vector2 newPosition);
 }
