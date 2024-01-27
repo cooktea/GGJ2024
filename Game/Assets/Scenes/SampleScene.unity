@@ -1254,6 +1254,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1869070050}
   - component: {fileID: 1869070051}
+  - component: {fileID: 1869070052}
   m_Layer: 0
   m_Name: StartUp
   m_TagString: Untagged
@@ -1288,9 +1289,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51b459903f30a2d4eb426bb2274e5d92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ball: {fileID: 0}
   TextScore: {fileID: 609417875}
   TimeRecord: {fileID: 1567758236}
   StartButton: {fileID: 389239994}
+--- !u!114 &1869070052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1869070048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 530fe96aa2a8e684d8261cdf7f4028f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvas: {fileID: 128172536}
 --- !u!1 &1939837921
 GameObject:
   m_ObjectHideFlags: 0

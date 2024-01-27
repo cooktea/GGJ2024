@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameManager : MonoBehaviour, IGameManager 
+public class GameManager : MonoBehaviour, IGameManager
 {
     enum State
     {
@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour, IGameManager
 
     List<GameObject> teammates = new List<GameObject>();
     List<GameObject> enemies = new List<GameObject>();
+    public GameObject ball;
 
     public TextMeshProUGUI TextScore;
     public TextMeshProUGUI TimeRecord;
@@ -108,7 +109,7 @@ public class GameManager : MonoBehaviour, IGameManager
 
     public void StartBulletTime()
     {
-        throw new System.NotImplementedException();
+        timeSpeed = 0.1f;
     }
 
     public void StartNewGame(int level = 1)
@@ -124,7 +125,7 @@ public class GameManager : MonoBehaviour, IGameManager
     void CreateTeammatesAndEnemiesAndBall(LevelInfo levelInfo)
     {
         var prefabBall = Resources.Load("Prefabs/Ball") as GameObject;
-        var ball = Instantiate(prefabBall);
+        ball = Instantiate(prefabBall);
         ball.transform.SetParent(GameObject.Find("Canvas").transform);
 
         int teammateCount = levelInfo.TeammateCount;
@@ -149,8 +150,8 @@ public class GameManager : MonoBehaviour, IGameManager
         }
 
         var holder = teammates[Random.Range(0, teammates.Count)];
-        ball.GetComponent<Ball>()?.SetOwner(holder);
-        holder.GetComponent<IPlayer>()?.OnCatchBall(ball);
+        ball.GetComponent<Ball>().SetOwner(holder);
+        holder.GetComponent<IPlayer>().OnCatchBall(ball);
     }
 
     void Start()
@@ -163,5 +164,10 @@ public class GameManager : MonoBehaviour, IGameManager
         if (currentState == State.Start || currentState == State.BulletTime)
         leftTime -= Time.deltaTime * timeSpeed;
         TimeRecord.text = string.Format("{0:N2}s", leftTime);
+    }
+
+    public void EndBulletTime()
+    {
+        timeSpeed = 1;
     }
 }
