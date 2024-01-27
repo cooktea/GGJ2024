@@ -72,7 +72,7 @@ public class Ball : MonoBehaviour, IBall
                 var player = item.GetComponentInParent<IPlayer>();
                 if (player is not null)
                 {
-                    player.OnCatchBall();
+                    player.OnCatchBall(gameObject);
                     Owner = item.gameObject;
                 }
             }

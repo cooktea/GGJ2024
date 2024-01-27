@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 // 场上的球员
 public interface IPlayer
@@ -16,5 +17,5 @@ public interface IPlayer
     }
     void TryRefreshActionTree();
     void TryDoActionTree();
-    public void OnCatchBall();
+    public void OnCatchBall(GameObject ball);
 }
