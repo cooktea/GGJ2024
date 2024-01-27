@@ -6,7 +6,6 @@ public class TeamMate : MonoBehaviour, ITeammate
 {
     public void OnCatchBall(GameObject ball)
     {
-        throw new System.NotImplementedException();
     }
 
     public void OnShootBall()

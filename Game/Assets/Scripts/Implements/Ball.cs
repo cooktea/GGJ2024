@@ -91,6 +91,12 @@ public class Ball : MonoBehaviour, IBall
         transform.position = Owner.transform.position + (Vector3)Random.insideUnitCircle;
     }
 
+    public void SetOwner(GameObject owner)
+    {
+        Owner = owner;
+        state = BallState.Held;
+    }
+
     #region IBall
     public GameObject GetOwner()
     {

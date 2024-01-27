@@ -7,6 +7,14 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour, IGameManager 
 {
+    enum State
+    {
+        End,
+        Start,
+        Pause,
+        BulletTime
+    }
+
     int currentLevel = 1;
     List<LevelInfo> levels = new List<LevelInfo>();
     List<Vector2> teammatesInitPositions = new List<Vector2>();
@@ -18,6 +26,10 @@ public class GameManager : MonoBehaviour, IGameManager
     public TextMeshProUGUI TextScore;
     public TextMeshProUGUI TimeRecord;
     public Button StartButton;
+
+    float leftTime = 0;
+    float timeSpeed = 1;
+    State currentState = State.End;
 
 
     public void BallIn()
@@ -69,14 +81,20 @@ public class GameManager : MonoBehaviour, IGameManager
         var level1 = new LevelInfo();
         level1.TeammateCount = 3;
         level1.EnemyCount = 1;
+        level1.Target = 1;
+        level1.GameTime = 120f;
 
         var level2 = new LevelInfo();
         level2.TeammateCount = 5;
         level2.EnemyCount = 3;
+        level2.Target = 3;
+        level2.GameTime = 120f;
 
         var level3 = new LevelInfo();
         level3.TeammateCount = 3;
         level3.EnemyCount = 5;
+        level3.Target = 5;
+        level3.GameTime = 180f;
 
         levels.Add(level1);
         levels.Add(level2);
@@ -96,8 +114,10 @@ public class GameManager : MonoBehaviour, IGameManager
     public void StartNewGame(int level = 1)
     {
         StartButton.enabled = false;
+        currentState = State.Start;
         currentLevel = level;
         var levelInfo = levels[currentLevel - 1];
+        leftTime = levelInfo.GameTime;
         CreateTeammatesAndEnemiesAndBall(levelInfo);
     }
 
@@ -128,8 +148,9 @@ public class GameManager : MonoBehaviour, IGameManager
             enemies.Add(enemy);
         }
 
-        var holder = teammates[Random.Range(0, teammates.Count)].GetComponent<IPlayer>();
-        holder.OnCatchBall(ball);
+        var holder = teammates[Random.Range(0, teammates.Count)];
+        ball.GetComponent<Ball>()?.SetOwner(holder);
+        holder.GetComponent<IPlayer>()?.OnCatchBall(ball);
     }
 
     void Start()
@@ -139,6 +160,8 @@ public class GameManager : MonoBehaviour, IGameManager
 
     void Update()
     {
-        
+        if (currentState == State.Start || currentState == State.BulletTime)
+        leftTime -= Time.deltaTime * timeSpeed;
+        TimeRecord.text = string.Format("{0:N2}s", leftTime);
     }
 }

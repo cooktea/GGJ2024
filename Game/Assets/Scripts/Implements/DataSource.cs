@@ -8,4 +8,6 @@ public struct LevelInfo
 {
     public int EnemyCount;
     public int TeammateCount;
+    public int Target;
+    public float GameTime;
 }
