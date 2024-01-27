@@ -1,2 +1,5 @@
-
+﻿
+/Game/Assembly-CSharp-Editor.csproj
+/Game/Scripts.csproj
+/Game/Assembly-CSharp.csproj
 *.csproj

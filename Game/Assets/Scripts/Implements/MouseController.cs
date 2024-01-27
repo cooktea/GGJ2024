@@ -1,5 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -23,7 +23,9 @@ public class MouseController : MonoBehaviour, IMouseController
     List<Vector2> pathPoints = new List<Vector2>(); 
     List<GameObject> pointObjects = new List<GameObject>();
 
-
+    [SerializeField]
+    LineRenderer lineRenderer;
+ 
     Vector2 Vector3ToVector2(Vector3 pos)
     {
         return new Vector2 (pos.x, pos.y); 
@@ -68,6 +70,9 @@ public class MouseController : MonoBehaviour, IMouseController
             {
                 pathPoints.Add(Vector3ToVector2 (Input.mousePosition));
                 pointObjects.Add(CreatePathPoint(Input.mousePosition));
+
+                lineRenderer.positionCount = pathPoints.Count;
+                lineRenderer.SetPositions(pathPoints.Select(p => new Vector3(p.x, p.y, 1f)).ToArray());
             }
         }
         Debug.Log("OnLeftButtonHold");
@@ -84,6 +89,8 @@ public class MouseController : MonoBehaviour, IMouseController
             Destroy(point);
         }
         pointObjects.Clear();
+        lineRenderer.positionCount = 0;
+        lineRenderer.SetPositions(new Vector3[] { });
         Debug.Log("OnLeftButtonRelease");
         Debug.Log(pathPoints.Count);
     }
