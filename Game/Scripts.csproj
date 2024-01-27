@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Implements\PlayerGround.cs" />
     <Compile Include="Assets\Scripts\Implements\MouseController.cs" />
+    <Compile Include="Assets\Scripts\Menu\MainMenu.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IBall.cs" />
     <Compile Include="Assets\Scripts\Implements\Gate.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IPlayer.cs" />
