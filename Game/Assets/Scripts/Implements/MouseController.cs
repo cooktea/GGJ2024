@@ -33,9 +33,10 @@ public class MouseController : MonoBehaviour, IMouseController
 
     GameObject CreatePathPoint(Vector3 pos)
     {
+        Debug.Log(pos.x + " " + pos.y + " " + pos.z);
         var prefab = Resources.Load("Prefabs/PathPoint");
         var ob = Instantiate(prefab) as GameObject;
-        ob.transform.position = pos;
+        ob.GetComponent<RectTransform>().anchoredPosition3D = pos;
         ob.transform.SetParent(canvas.transform);
         return ob;
     }
@@ -57,7 +58,7 @@ public class MouseController : MonoBehaviour, IMouseController
         Debug.Log("OnLeftButtonDown");
         pathPoints.Clear();
         pathPoints.Add(Vector3ToVector2(Input.mousePosition));
-        pointObjects.Add(CreatePathPoint(Input.mousePosition));
+        //pointObjects.Add(CreatePathPoint(Input.mousePosition));
     }
 
     public void OnLeftButtonHold()
@@ -69,7 +70,7 @@ public class MouseController : MonoBehaviour, IMouseController
             if ((Vector3ToVector2(Input.mousePosition) - lastPoint).magnitude > 10)
             {
                 pathPoints.Add(Vector3ToVector2 (Input.mousePosition));
-                pointObjects.Add(CreatePathPoint(Input.mousePosition));
+                //pointObjects.Add(CreatePathPoint(Input.mousePosition));
 
                 lineRenderer.positionCount = pathPoints.Count;
                 lineRenderer.SetPositions(pathPoints.Select(p => new Vector3(p.x, p.y, 1f)).ToArray());
@@ -84,11 +85,11 @@ public class MouseController : MonoBehaviour, IMouseController
         Iball.SetInitSpeed(200);
         Iball.SetPath(pathPoints);
         Iball.Shoot();
-        foreach (var point in pointObjects)
-        {
-            Destroy(point);
-        }
-        pointObjects.Clear();
+        //foreach (var point in pointObjects)
+        //{
+        //    //Destroy(point);
+        //}
+        //pointObjects.Clear();
         lineRenderer.positionCount = 0;
         lineRenderer.SetPositions(new Vector3[] { });
         Debug.Log("OnLeftButtonRelease");

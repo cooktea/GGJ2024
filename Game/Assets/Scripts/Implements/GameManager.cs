@@ -62,18 +62,18 @@ public class GameManager : MonoBehaviour, IGameManager
     void InitPlayerPositions() 
     { 
         // Teammates
-        teammatesInitPositions.Add(new Vector3(800, 540, 0));
-        teammatesInitPositions.Add(new Vector3(650, 340, 0));
-        teammatesInitPositions.Add(new Vector3(650, 780, 0));
-        teammatesInitPositions.Add(new Vector3(500, 140, 0));
-        teammatesInitPositions.Add(new Vector3(500, 980, 0));
+        teammatesInitPositions.Add(new Vector3(800, -540, 0));
+        teammatesInitPositions.Add(new Vector3(650, -340, 0));
+        teammatesInitPositions.Add(new Vector3(650, -780, 0));
+        teammatesInitPositions.Add(new Vector3(500, -140, 0));
+        teammatesInitPositions.Add(new Vector3(500, -980, 0));
 
         // Enemies
-        enemiesInitPositions.Add(new Vector3(1100, 540));
-        enemiesInitPositions.Add(new Vector3(1300, 340));
-        enemiesInitPositions.Add(new Vector3(1300, 780));
-        enemiesInitPositions.Add(new Vector3(1500, 140));
-        enemiesInitPositions.Add(new Vector3(1500, 980));
+        enemiesInitPositions.Add(new Vector3(1100, -540, 0));
+        enemiesInitPositions.Add(new Vector3(1300, -340, 0));
+        enemiesInitPositions.Add(new Vector3(1300, -780, 0));
+        enemiesInitPositions.Add(new Vector3(1500, -140, 0));
+        enemiesInitPositions.Add(new Vector3(1500, -980, 0));
     }
 
 
@@ -136,7 +136,8 @@ public class GameManager : MonoBehaviour, IGameManager
         {
             var teammate = Instantiate(prefabTeammate);
             teammate.transform.SetParent(GameObject.Find("Canvas").transform);
-            teammate.transform.position = teammatesInitPositions[i];
+            var rectTransform = teammate.GetComponent<RectTransform>();
+            rectTransform.anchoredPosition3D = teammatesInitPositions[i];
             teammates.Add(teammate);
         }
 
@@ -145,7 +146,8 @@ public class GameManager : MonoBehaviour, IGameManager
         {
             var enemy = Instantiate(prefabEnemy);
             enemy.transform.SetParent(GameObject.Find("Canvas").transform);
-            enemy.transform.position = enemiesInitPositions[i];
+            var rectTransform = enemy.GetComponent<RectTransform>();
+            rectTransform.anchoredPosition3D = enemiesInitPositions[i];
             enemies.Add(enemy);
         }
 
