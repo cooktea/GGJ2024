@@ -74,6 +74,8 @@ public class Ball : MonoBehaviour, IBall
                 {
                     player.OnCatchBall();
                     Owner = item.gameObject;
+                    state = BallState.Held;
+                    break;
                 }
             }
         }
@@ -83,7 +85,9 @@ public class Ball : MonoBehaviour, IBall
         }
     }
 
-    void StateHeld() { }
+    void StateHeld() {
+        transform.position = Owner.transform.position + (Vector3)Random.insideUnitCircle;
+    }
 
     #region IBall
     public GameObject GetOwner()
