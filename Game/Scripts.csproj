@@ -58,7 +58,9 @@
     <Analyzer Include="C:\Program Files\Unity 2020.3.33f1\Editor\2022.3.3f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Implements\PlayerGround.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IBall.cs" />
+    <Compile Include="Assets\Scripts\Implements\Gate.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IPlayer.cs" />
     <Compile Include="Assets\Scripts\Implements\Enemy.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IMouseController.cs" />

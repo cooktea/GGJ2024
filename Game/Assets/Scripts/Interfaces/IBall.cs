@@ -16,4 +16,7 @@ public interface IBall
     public bool CheckIsScore();
     public bool CheckOutLine();
     public bool CheckCatched();
+
+    public void SetOutLine(bool value);
+    public void SetIsScore(bool value);
 }
