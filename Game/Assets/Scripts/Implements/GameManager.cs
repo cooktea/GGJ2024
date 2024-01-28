@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -87,23 +86,6 @@ public class GameManager : MonoBehaviour, IGameManager
     public int GetLastGameSecond()
     {
         throw new System.NotImplementedException();
-    }
-
-    void InitPlayerPositions()
-    {
-        // Teammates
-        teammatesInitPositions.Add(new Vector3(800, 540, 1));
-        teammatesInitPositions.Add(new Vector3(650, 340, 1));
-        teammatesInitPositions.Add(new Vector3(650, 780, 1));
-        teammatesInitPositions.Add(new Vector3(500, 140, 1));
-        teammatesInitPositions.Add(new Vector3(500, 980, 1));
-
-        // Enemies
-        enemiesInitPositions.Add(new Vector3(1100, 540, 1));
-        enemiesInitPositions.Add(new Vector3(1300, 340, 1));
-        enemiesInitPositions.Add(new Vector3(1300, 780, 1));
-        enemiesInitPositions.Add(new Vector3(1500, 140, 1));
-        enemiesInitPositions.Add(new Vector3(1500, 980, 1));
     }
 
     public void NextRound()

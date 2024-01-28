@@ -352,6 +352,26 @@ PrefabInstance:
       propertyPath: StartButton
       value: 
       objectReference: {fileID: 389239994}
+    - target: {fileID: 3045577808883651931, guid: de244d1e52a5d234ab3b8d140015085e, type: 3}
+      propertyPath: LevelInfo.Level
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3045577808883651931, guid: de244d1e52a5d234ab3b8d140015085e, type: 3}
+      propertyPath: LevelInfo.GameTime
+      value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 3045577808883651931, guid: de244d1e52a5d234ab3b8d140015085e, type: 3}
+      propertyPath: LevelInfo.ScoreTarget
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3045577808883651931, guid: de244d1e52a5d234ab3b8d140015085e, type: 3}
+      propertyPath: LevelInfo.AIPlayerPosition.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3045577808883651931, guid: de244d1e52a5d234ab3b8d140015085e, type: 3}
+      propertyPath: LevelInfo.HumanPlayerPosition.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5375800415063715534, guid: de244d1e52a5d234ab3b8d140015085e, type: 3}
       propertyPath: canvas
       value: 
@@ -508,6 +528,10 @@ PrefabInstance:
     - target: {fileID: 2194582835381736146, guid: 52cd2caf366ef6742a9620b7c12addb1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4699220218816779854, guid: 52cd2caf366ef6742a9620b7c12addb1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4699220218816779854, guid: 52cd2caf366ef6742a9620b7c12addb1, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
