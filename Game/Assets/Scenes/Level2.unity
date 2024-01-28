@@ -383,6 +383,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4699220218816779854, guid: 52cd2caf366ef6742a9620b7c12addb1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4699220218816779854, guid: 52cd2caf366ef6742a9620b7c12addb1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1930458971}
+    - target: {fileID: 4699220218816779854, guid: 52cd2caf366ef6742a9620b7c12addb1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: StartNewGame
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -446,6 +458,26 @@ PrefabInstance:
       propertyPath: StartButton
       value: 
       objectReference: {fileID: 1647332542}
+    - target: {fileID: 3045577808883651931, guid: de244d1e52a5d234ab3b8d140015085e, type: 3}
+      propertyPath: LevelInfo.Level
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3045577808883651931, guid: de244d1e52a5d234ab3b8d140015085e, type: 3}
+      propertyPath: LevelInfo.GameTime
+      value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 3045577808883651931, guid: de244d1e52a5d234ab3b8d140015085e, type: 3}
+      propertyPath: LevelInfo.ScoreTarget
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3045577808883651931, guid: de244d1e52a5d234ab3b8d140015085e, type: 3}
+      propertyPath: LevelInfo.AIPlayerPosition.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3045577808883651931, guid: de244d1e52a5d234ab3b8d140015085e, type: 3}
+      propertyPath: LevelInfo.HumanPlayerPosition.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5375800415063715534, guid: de244d1e52a5d234ab3b8d140015085e, type: 3}
       propertyPath: canvas
       value: 
@@ -503,3 +535,14 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: de244d1e52a5d234ab3b8d140015085e, type: 3}
+--- !u!114 &1930458971 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3045577808883651931, guid: de244d1e52a5d234ab3b8d140015085e, type: 3}
+  m_PrefabInstance: {fileID: 1930458970}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51b459903f30a2d4eb426bb2274e5d92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
