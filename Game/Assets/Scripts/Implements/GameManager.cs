@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour, IGameManager
     float leftTime = 0;
     float timeSpeed = 1;
     public float deltaTime => Time.deltaTime * timeSpeed;
+    public float fixedDeltaTime => Time.fixedDeltaTime * timeSpeed;
     State currentState = State.End;
 
     int ScoreHuman = 0;
@@ -61,11 +62,11 @@ public class GameManager : MonoBehaviour, IGameManager
             {
                 SceneManager.LoadScene(LevelInfo.Level + 1);
             }
+            return;
         }
-        else
-        {
-            RestartGame();
-        }
+
+        RestartGame();
+
     }
 
     private void RestartGame()
@@ -119,6 +120,7 @@ public class GameManager : MonoBehaviour, IGameManager
     {
         var prefabBall = Resources.Load("Prefabs/Ball") as GameObject;
         ball = Instantiate(prefabBall);
+        ball.GetComponent<Ball>().GM = this;
 
         var prefabTeammate = Resources.Load("Prefabs/Teammate") as GameObject;
         for (int i = 0; i < levelInfo.HumanPlayerPosition.Count; i++)
