@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelInfo : MonoBehaviour
+[Serializable]
+public class LevelInfo
 {
     public float GameTime;
     public List<Vector2> AIPlayerPosition;
