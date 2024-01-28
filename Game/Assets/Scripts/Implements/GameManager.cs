@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour, IGameManager
 
     float leftTime = 0;
     float timeSpeed = 1;
+    public float deltaTime => Time.deltaTime * timeSpeed;
     State currentState = State.End;
 
     int ScoreHuman = 0;
