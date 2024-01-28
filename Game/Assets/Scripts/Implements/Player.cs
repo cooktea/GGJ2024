@@ -17,7 +17,7 @@ public class Player : MonoBehaviour, IPlayer
 {
     [Header("AI")]
     [SerializeField] BTState btState = BTState.Enter;
-    [SerializeField] float Speed = 30;
+    [SerializeField] float Speed = 1;
     [SerializeField] float PlayerDistanceThreshold;
     [SerializeField] float GateDistanceThreshold;
     [SerializeField] Vector2 dir;

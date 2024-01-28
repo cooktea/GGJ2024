@@ -1,4 +1,3 @@
-using Codice.Client.IssueTracker;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -64,6 +63,10 @@ public class GameManager : MonoBehaviour, IGameManager
             if (LevelInfo.Level < 3)
             {
                 SceneManager.LoadScene(LevelInfo.Level + 1);
+            }
+            else
+            {
+                SceneManager.LoadScene(0);
             }
             return;
         }

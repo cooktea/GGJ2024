@@ -100,9 +100,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   btState: 5
-  Speed: 2
+  Speed: 0.3
   PlayerDistanceThreshold: 2
   GateDistanceThreshold: 2
+  dir: {x: 0, y: 0}
+  AIUpdateTime: 0.125
   GM: {fileID: 0}
   side: 0
 --- !u!61 &5322560596425778067
