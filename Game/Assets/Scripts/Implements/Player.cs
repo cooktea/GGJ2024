@@ -25,7 +25,7 @@ public class Player : MonoBehaviour, IPlayer
     [SerializeField] float PlayerDistanceThreshold;
     [SerializeField] float GateDistanceThreshold;
     [SerializeField] Vector2 dir;
-    [SerializeField] float AIUpdateTime = 0.1f;
+    [SerializeField] float AIUpdateTime = 0.125f;
 
     public bool HoldBall { get; private set; }
     public bool OpponentHoldBall { get; private set; }
@@ -106,7 +106,6 @@ public class Player : MonoBehaviour, IPlayer
                 return;
             }
 
-
             if (GM.Ball.GetComponent<IBall>().GetOwner() == null)
             {
                 StartMoveToBall();
@@ -125,21 +124,32 @@ public class Player : MonoBehaviour, IPlayer
         Move();
     }
 
+    void Move()
+    {
+        var movement = Speed * GM.deltaTime * dir;
+        transform.position = (Vector2)transform.position + movement;
+    }
+
     void StartMoveToBall()
     {
         btState = BTState.TryGetBallFromGround;
-        StartCoroutine(MoveToBall());
+        StartCoroutine(MoveToPickBall());
     }
 
-    private IEnumerator MoveToBall()
+    private IEnumerator MoveToPickBall()
     {
         while (GM.Ball.GetComponent<IBall>().GetOwner() == null)
         {
-            var dir = GM.Ball.transform.position - transform.position;
-            SetDir(dir.normalized);
+            MoveToBall();
             yield return new WaitForSeconds(AIUpdateTime);
         }
         btState = BTState.Enter;
+    }
+
+    void MoveToBall()
+    {
+        var dir = GM.Ball.transform.position - transform.position;
+        SetDir(dir.normalized);
     }
 
     void BeginAttackWithBall()
@@ -160,21 +170,9 @@ public class Player : MonoBehaviour, IPlayer
             else //-- 与对方任一球员距离小于等于X时
             {
                 int p = Random.Range(0, 100);
-                if (p < 20)
+                if (p < 70)
                 {
-                    SetDir(Forward);
-                }
-                else if (p < 40)
-                {
-                    SetDir(Backward);
-                }
-                else if (p < 60)
-                {
-                    SetDir(Vector2.up);
-                }
-                else if (p < 80)
-                {
-                    SetDir(Vector2.up);
+                    MoveToGate();
                 }
                 else if (p < 90)
                 {
@@ -213,7 +211,11 @@ public class Player : MonoBehaviour, IPlayer
             var p = Random.Range(0, 100);
             var disToGate = Vector2.Distance(ballOwner.transform.position, selfGate.transform.position);
 
-            if (disToGate < this.GateDistanceThreshold)
+            if (IamCloestPlayerToEnemyHolder())
+            {
+                MoveToBall();
+            }
+            else if (disToGate < GateDistanceThreshold)
             {
                 DefenceCloseToGate(p);
             }
@@ -240,31 +242,19 @@ public class Player : MonoBehaviour, IPlayer
 
     private void Defence(int p)
     {
-        if (p < 20)
+        if (p < 60)
         {
             MoveToBall();
         }
-        else if (p < 40)
+        else if (p < 80)
         {
             var enemy = FindCloestPlayer(Enemies);
             Vector2 dir = enemy.transform.position - transform.position;
             SetDir(dir.normalized);
         }
-        else if (p < 60)
-        {
-            SetDir(Vector2.up);
-        }
-        else if (p < 80)
-        {
-            SetDir(Vector2.down);
-        }
-        else if (p < 90)
-        {
-            SetDir(Forward);
-        }
         else
         {
-            SetDir(Backward);
+            RandomMove();
         }
     }
 
@@ -288,11 +278,7 @@ public class Player : MonoBehaviour, IPlayer
         
     }
 
-    void Move()
-    {
-        var movement = Speed * GM.deltaTime * dir;
-        transform.position = (Vector2)transform.position + movement;
-    }
+    
 
     void RandomMove()
     {
@@ -417,5 +403,10 @@ public class Player : MonoBehaviour, IPlayer
                 Teamates = GM.teammates.Select(obj => obj.GetComponent<Player>()).Where(p => p != this).ToArray();
                 break;
         }
+    }
+
+    bool IamCloestPlayerToEnemyHolder()
+    {
+        return GM.CloestPlayerToEnemyHolder() == this as IPlayer;
     }
 }
