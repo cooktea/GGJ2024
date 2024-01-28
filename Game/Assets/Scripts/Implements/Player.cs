@@ -15,10 +15,6 @@ public enum BTState
 
 public class Player : MonoBehaviour, IPlayer
 {
-    float GateToMiddle = 7.4f;
-    float UpperBound = 3.9f;
-    float Lowerbound = -3.9f;
-
     [Header("AI")]
     [SerializeField] BTState btState = BTState.Enter;
     [SerializeField] float Speed = 30;
@@ -205,8 +201,8 @@ public class Player : MonoBehaviour, IPlayer
 
     IEnumerator Defence()
     {
-        GameObject ballOwner;
-        while ((ballOwner = GM.Ball.GetComponent<IBall>().GetOwner()) != null)
+        GameObject ballOwner = null, preOwner = null;
+        while (preOwner == ballOwner && (ballOwner = GM.Ball.GetComponent<IBall>().GetOwner()) != null)
         {
             var p = Random.Range(0, 100);
             var disToGate = Vector2.Distance(ballOwner.transform.position, selfGate.transform.position);
@@ -224,8 +220,10 @@ public class Player : MonoBehaviour, IPlayer
                 Defence(p);
             }
             yield return new WaitForSeconds(AIUpdateTime);
-        }
 
+            preOwner = ballOwner;
+        }
+        btState = BTState.Enter;
     }
 
     private void DefenceCloseToGate(int p)
@@ -266,16 +264,7 @@ public class Player : MonoBehaviour, IPlayer
 
     void SetDir(Vector2 dir)
     {
-        if (transform.position.y >= UpperBound)
-        {
-            dir.y = -Mathf.Abs(dir.y);
-        }
-        else if (transform.position.y <= Lowerbound)
-        {
-            dir.y = Mathf.Abs(dir.y);
-        }
-        this.dir = dir.normalized;
-        
+        this.dir = Data.ClampDir(this.transform, dir).normalized;
     }
 
     

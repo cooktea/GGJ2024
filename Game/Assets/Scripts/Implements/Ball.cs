@@ -21,6 +21,7 @@ public class Ball : MonoBehaviour, IBall
     [SerializeField] List<GameObject> playersInCollied;
     Collider2D[] others = new Collider2D[10];
     Collider2D ballCollider;
+    public GameManager GM;
     enum BallState
     {
         Free,
@@ -39,11 +40,11 @@ public class Ball : MonoBehaviour, IBall
     // Update is called once per frame
     void FixedUpdate()
     {
-        DoMove(Time.fixedDeltaTime);
+        DoMove(GM.fixedDeltaTime);
 
         if (speed > 0)
         {
-            speed -= Time.fixedDeltaTime * 10;
+            speed -= GM.fixedDeltaTime * 10;
             if (speed < 0)
             {
                 speed = 0;
@@ -67,8 +68,10 @@ public class Ball : MonoBehaviour, IBall
             }
         }
 
-        transform.position += dir * speed * dt;
+        transform.position += Data.ClampDir(transform, dir) * speed * dt;
     }
+
+    
 
     void StateFree(float dt)
     {
