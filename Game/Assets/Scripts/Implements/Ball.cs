@@ -113,6 +113,7 @@ public class Ball : MonoBehaviour, IBall
             state = BallState.Free;
             StartCoroutine(resetContact());
         }
+        Owner.GetComponent<IPlayer>().Shoot();
         Owner = null;
     }
 

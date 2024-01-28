@@ -9,7 +9,7 @@ public class Player : MonoBehaviour, IPlayer
     float UpperBound = 3.9f;
     float Lowerbound = -3.9f;
 
-    enum PlayerBTState
+    enum BTState
     {
         AttackingWithBall,
         TryGetBallFromGround,
@@ -20,7 +20,7 @@ public class Player : MonoBehaviour, IPlayer
     }
 
     [Header("AI")]
-    [SerializeField] PlayerBTState playerState = PlayerBTState.Enter;
+    [SerializeField] BTState btState = BTState.Enter;
     [SerializeField] float Speed = 30;
     [SerializeField] float PlayerDistanceThreshold;
     [SerializeField] float GateDistanceThreshold;
@@ -32,7 +32,6 @@ public class Player : MonoBehaviour, IPlayer
 
     public IBall BallRef { get; private set; }
     public GameManager GM;
-    public IBall GMBall => GM.Ball.GetComponent<Ball>();
     Gate gate;
 
 
@@ -64,7 +63,7 @@ public class Player : MonoBehaviour, IPlayer
     {
         HoldBall = true;
         BallRef = ball.GetComponent<IBall>();
-        playerState = PlayerBTState.Enter;
+        btState = BTState.Enter;
     }
 
     public void OnCatchEnemy(GameObject ball)
@@ -82,13 +81,13 @@ public class Player : MonoBehaviour, IPlayer
     public void Shoot()
     {
         HoldBall = false;
-        playerState = PlayerBTState.Enter;
+        btState = BTState.Enter;
     }
 
     private void Update()
     {
         // When OnCatchBall() and Shoot() will re-enter BT
-        if (playerState == PlayerBTState.Enter)
+        if (btState == BTState.Enter)
         {
             if (coroutine != null)
             {
@@ -102,13 +101,17 @@ public class Player : MonoBehaviour, IPlayer
             }
             else
             {
-                if (GM.BallSide() != side)
+                if (GM.Ball.GetComponent<IBall>().GetOwner() == null)
                 {
-                    if (DisToBallOwner() < PlayerDistanceThreshold)
-                    {
-                        AttackBallOwner();
-                    }
-                    else
+                    StartMoveToBall();
+                }
+                else if (GM.BallSide() != side)
+                {
+                    //if (DisToBallOwner() < PlayerDistanceThreshold)
+                    //{
+                    //    AttackBallOwner();
+                    //}
+                    //else
                     {
                         StartDefence();
                     }
@@ -121,9 +124,26 @@ public class Player : MonoBehaviour, IPlayer
         }
     }
 
+    void StartMoveToBall()
+    {
+        btState = BTState.TryGetBallFromGround;
+        StartCoroutine(MoveToBall());
+    }
+
+    private IEnumerator MoveToBall()
+    {
+        while (GM.Ball.GetComponent<IBall>().GetOwner() == null)
+        {
+            var dir = GM.Ball.transform.position - transform.position;
+            Move(dir.normalized);
+            yield return null;
+        }
+        btState = BTState.Enter;
+    }
+
     void BeginAttackWithBall()
     {
-        playerState = PlayerBTState.AttackingWithBall;
+        btState = BTState.AttackingWithBall;
         coroutine = StartCoroutine(AttackWithBall());
     }
 
@@ -183,13 +203,13 @@ public class Player : MonoBehaviour, IPlayer
             yield return null;
         }
 
-        playerState = PlayerBTState.Enter;
+        btState = BTState.Enter;
     }
 
 
     void AttackBallOwner()
     {
-        var targetPos = GMBall.GetOwner().transform.position;
+        var targetPos = GM.Ball.GetComponent<IBall>().GetOwner().transform.position;
         var dir = targetPos - transform.position;
         Move(dir.normalized);
     }
@@ -199,13 +219,14 @@ public class Player : MonoBehaviour, IPlayer
         yield return null;
     }
 
-    void StartDefence() {
+    void StartDefence()
+    {
         coroutine = StartCoroutine(Defence());
     }
 
     void Move(Vector2 dir)
     {
-        if (transform.position.y >= UpperBound )
+        if (transform.position.y >= UpperBound)
         {
             dir.y = -Mathf.Abs(dir.y);
         }
@@ -283,7 +304,7 @@ public class Player : MonoBehaviour, IPlayer
 
     float DisToBallOwner()
     {
-        return Vector2.Distance(GMBall.GetOwner().transform.position, transform.position);
+        return Vector2.Distance(GM.Ball.GetComponent<IBall>().GetOwner().transform.position, transform.position);
     }
 
     float DisToMiddle()

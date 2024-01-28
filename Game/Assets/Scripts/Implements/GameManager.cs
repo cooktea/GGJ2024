@@ -215,7 +215,9 @@ public class GameManager : MonoBehaviour, IGameManager
     #region AI SUPPORT
     public IPlayer.PlayerSide BallSide()
     {
-        return Ball.GetComponent<Ball>().GetOwner().GetComponent<IPlayer>().Side;
+        var ballcomp = Ball.GetComponent<Ball>();
+        var owner = ballcomp.GetOwner();
+        return owner.GetComponent<IPlayer>().Side;
     }
     #endregion
 }

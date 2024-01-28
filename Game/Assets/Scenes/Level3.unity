@@ -139,6 +139,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GUI
       objectReference: {fileID: 0}
+    - target: {fileID: 959215739890626182, guid: 52cd2caf366ef6742a9620b7c12addb1, type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 1073234266}
     - target: {fileID: 2194582835381736146, guid: 52cd2caf366ef6742a9620b7c12addb1, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -223,6 +227,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3449344100158760204, guid: 52cd2caf366ef6742a9620b7c12addb1, type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 1073234266}
     - target: {fileID: 4699220218816779854, guid: 52cd2caf366ef6742a9620b7c12addb1, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
@@ -380,12 +388,17 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3045577808883651931, guid: de244d1e52a5d234ab3b8d140015085e, type: 3}
   m_PrefabInstance: {fileID: 1073234264}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1073234266}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 51b459903f30a2d4eb426bb2274e5d92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1073234266 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8174027713794394088, guid: de244d1e52a5d234ab3b8d140015085e, type: 3}
+  m_PrefabInstance: {fileID: 1073234264}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1400958535
 GameObject:
   m_ObjectHideFlags: 0
