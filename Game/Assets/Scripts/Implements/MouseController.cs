@@ -73,6 +73,9 @@ public class MouseController : MonoBehaviour, IMouseController
 		var initialSpeed = 10 + loopCount * 2f;
 		Debug.Log($"Path has { loopCount } loops.");
 
+		var randomBallKickSound = Random.Range(0, 2);
+		SoundManager.PlayAudio($"BallKick0{randomBallKickSound + 1}");
+
 		var Iball = GM.Ball.GetComponent<IBall>();
 		Iball.SetInitSpeed(initialSpeed);
 		Iball.SetPath(pathPoints);

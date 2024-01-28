@@ -43,6 +43,8 @@ public class GameManager : MonoBehaviour, IGameManager
     [SerializeField] LevelInfo LevelInfo;
     public void BallIn(IPlayer.PlayerSide side)
     {
+        SoundManager.PlayAudio("Whistle01");
+
         if (side == IPlayer.PlayerSide.AI)
         {
             ScoreHuman++;
