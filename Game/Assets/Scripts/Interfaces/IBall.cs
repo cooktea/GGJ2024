@@ -13,10 +13,8 @@ public interface IBall
     public void SetPath(List<Vector2> pathPoints);
     public float SetInitSpeed (float speed);
     public void DoMove(float deltaTime);
-    public bool CheckIsScore();
     public bool CheckOutLine();
     public bool CheckCatched();
 
     public void SetOutLine(bool value);
-    public void SetIsScore(bool value);
 }

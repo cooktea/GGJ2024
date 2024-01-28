@@ -151,11 +151,6 @@ public class Ball : MonoBehaviour, IBall
         }
     }
 
-    public bool CheckIsScore()
-    {
-        return isScore;
-    }
-
     public bool CheckOutLine()
     {
         return isOutLine;
@@ -171,13 +166,7 @@ public class Ball : MonoBehaviour, IBall
         isOutLine = value;
     }
 
-    public void SetIsScore(bool value)
-    {
-        isScore = value;
-    }
-
     bool isOutLine;
-    bool isScore;
     #endregion IBall
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -197,4 +186,5 @@ public class Ball : MonoBehaviour, IBall
             this.playersInCollied.Remove(collision.gameObject);
         }
     }
+
 }

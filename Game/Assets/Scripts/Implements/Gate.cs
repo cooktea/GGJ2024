@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class Gate : MonoBehaviour
 {
-    [SerializeField] bool Enemy;
-    [SerializeField] bool isScoring;
+    [SerializeField] IPlayer.PlayerSide side;
+    [SerializeField] GameObject gameManager;
+    GameManager GM => gameManager?.GetComponent<GameManager>();
 
-    Collider2D Collider;
     // Start is called before the first frame update
     void Start()
     {
-        Collider = GetComponent<Collider2D>();
-        isScoring = false;
     }
 
     // Update is called once per frame
@@ -24,10 +22,9 @@ public class Gate : MonoBehaviour
     {
         //Debug.Log("enter gate");
         var ball = collision.gameObject.GetComponent<IBall>();
-        if (!isScoring && ball is not null)
+        if (ball is not null)
         {
-            ball.SetIsScore(true);
-            isScoring = true;
+            GM.BallIn(side);
         }
     }
 }

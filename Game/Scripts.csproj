@@ -64,13 +64,13 @@
     <Compile Include="Assets\Scripts\Interfaces\IBall.cs" />
     <Compile Include="Assets\Scripts\Implements\Gate.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IPlayer.cs" />
+    <Compile Include="Assets\Scripts\Implements\LevelInfo.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IMouseController.cs" />
     <Compile Include="Assets\Scripts\Implements\Player.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IGameManager.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IEnemy.cs" />
     <Compile Include="Assets\Scripts\Implements\GameManager.cs" />
     <Compile Include="Assets\Scripts\Interfaces\ITeammate.cs" />
-    <Compile Include="Assets\Scripts\Implements\DataSource.cs" />
     <Compile Include="Assets\Scripts\Implements\Ball.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IActionNode.cs" />
   </ItemGroup>

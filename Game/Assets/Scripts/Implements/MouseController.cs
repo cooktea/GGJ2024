@@ -69,7 +69,7 @@ public class MouseController : MonoBehaviour, IMouseController
 
 	public void OnLeftButtonRelease()
 	{
-		var Iball = GM.ball.GetComponent<IBall>();
+		var Iball = GM.Ball.GetComponent<IBall>();
 		Iball.SetInitSpeed(10);
 		Iball.SetPath(pathPoints);
 		Iball.Shoot();
@@ -110,7 +110,7 @@ public class MouseController : MonoBehaviour, IMouseController
 
 			if (Input.GetMouseButton(((int)MouseButton.LeftMouse)))
 			{
-				if (currentPlayer != null && GM.ball.GetComponent<Ball>().GetOwner() == currentPlayer)
+				if (currentPlayer != null && GM.Ball.GetComponent<Ball>().GetOwner() == currentPlayer)
 				{
 					currentState = State.HOLD;
 					OnLeftButtonDown();

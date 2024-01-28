@@ -35,15 +35,6 @@ public class Player : MonoBehaviour, IPlayer
     {
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        IBall ball = collision.GetComponent<IBall>();
-        if (ball is not null)
-        {
-            Debug.Log("ball");
-        }
-    }
-
     public void Shoot()
     {
         HoldBall = (false);
