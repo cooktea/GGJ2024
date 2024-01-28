@@ -10,11 +10,11 @@ public class LevelInfo
     [Tooltip("对方球员位置")]
     public List<Vector2> AIPlayerPosition;
     [Tooltip("对方球员状态")]
-    public List<PlayerState> AIPlayerStates;
+    public List<BTState> AIPlayerStates;
     [Tooltip("我方球员位置")]
     public List<Vector2> HumanPlayerPosition;
     [Tooltip("我方球员状态")]
-    public List<PlayerState> HumanPlayerStates;
+    public List<BTState> HumanPlayerStates;
     [Tooltip("目标进球数")]
     public int ScoreTarget;
     [Tooltip("关卡序号")]
