@@ -65,6 +65,10 @@ public class GameManager : MonoBehaviour, IGameManager
             {
                 SceneManager.LoadScene(LevelInfo.Level + 1);
             }
+            else
+            {
+                SceneManager.LoadScene(0);
+            }
             return;
         }
 
