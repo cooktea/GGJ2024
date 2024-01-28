@@ -238,12 +238,16 @@ public class GameManager : MonoBehaviour, IGameManager
                 playerList = teammates;
                 break;
         }
+        return ClosetPlayerToPoint(playerList, (Vector2)Ball.transform.position);
+    }
 
+    public IPlayer ClosetPlayerToPoint(List<GameObject> playerList, Vector2 pos)
+    {
         IPlayer p = null;
         float min = float.MaxValue;
         for (var i = 0; i < playerList.Count; i++)
         {
-            var dis = Vector2.Distance(Ball.transform.position, playerList[i].transform.position);
+            var dis = Vector2.Distance(pos, playerList[i].transform.position);
             if (min > dis)
             {
                 p = playerList[i].GetComponent<IPlayer>();

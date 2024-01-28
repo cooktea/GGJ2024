@@ -65,6 +65,7 @@
     <Compile Include="Assets\Scripts\Implements\Gate.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IPlayer.cs" />
     <Compile Include="Assets\Scripts\Implements\Data.cs" />
+    <Compile Include="Assets\Scripts\Implements\SoundManager.cs" />
     <Compile Include="Assets\Scripts\Implements\LevelInfo.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IMouseController.cs" />
     <Compile Include="Assets\Scripts\Implements\Player.cs" />

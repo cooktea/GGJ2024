@@ -1,16 +1,16 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 
 public enum BTState
 {
-	AttackingWithBall,
-	TryGetBallFromGround,
-	TryGetBallFromEnemy,
-	Defencing,
-	Roaming,
-	Enter,
+    AttackingWithBall,
+    TryGetBallFromGround,
+    Defencing,
+    Roaming,
+    Enter,
 }
 
 public class Player : MonoBehaviour, IPlayer
@@ -22,6 +22,8 @@ public class Player : MonoBehaviour, IPlayer
     [SerializeField] float GateDistanceThreshold;
     [SerializeField] Vector2 dir;
     [SerializeField] float AIUpdateTime = 0.125f;
+
+    Vector2 birthPlace;
 
     public bool HoldBall { get; private set; }
     public bool OpponentHoldBall { get; private set; }
@@ -58,6 +60,8 @@ public class Player : MonoBehaviour, IPlayer
                 selfGate = GM.GateAI.GetComponent<Gate>();
                 break;
         }
+        btState = BTState.Enter;
+        birthPlace = transform.position;
     }
 
     public void OnCatchBall(GameObject ball)
@@ -99,20 +103,29 @@ public class Player : MonoBehaviour, IPlayer
             if (HoldBall)
             {
                 BeginAttackWithBall();
+                Debug.Log($"{name} BeginAttackWithBall");
                 return;
             }
 
             if (GM.Ball.GetComponent<IBall>().GetOwner() == null)
             {
                 StartMoveToBall();
+                Debug.Log($"{name} move to ball");
                 return;
             }
 
             if (GM.BallSide() != side)
             {
                 StartDefence();
+                Debug.Log($"{name} defence still");
             }
         }
+    }
+
+    void StartRoaming()
+    {
+        btState = BTState.Roaming;
+        coroutine = null;
     }
 
     private void FixedUpdate()
@@ -158,44 +171,11 @@ public class Player : MonoBehaviour, IPlayer
     {
         while (HoldBall)
         {
-            // -- 与对方所有球员距离都大于X时
-            if (DisToCloestEnemy() > PlayerDistanceThreshold)
-            {
-                MoveToGate();
-            }
-            else //-- 与对方任一球员距离小于等于X时
-            {
-                int p = Random.Range(0, 100);
-                if (p < 70)
-                {
-                    MoveToGate();
-                }
-                else if (p < 90)
-                {
-                    MoveAwayToCloestEnemy();
-                }
-                else
-                {
-                    MoveToCloestTeamate();
-                }
-            }
-            yield return new WaitForSeconds(AIUpdateTime);
-        }
-
-        btState = BTState.Enter;
-    }
-
-
-    IEnumerator AttackBallOwner()
-    {
-        while (GM.Ball.GetComponent<IBall>().GetOwner() != null)
-        {
-            var targetPos = GM.Ball.GetComponent<IBall>().GetOwner().transform.position;
-            var dir = targetPos - transform.position;
-            SetDir(dir.normalized);
+            MoveToGate();
 
             yield return new WaitForSeconds(AIUpdateTime);
         }
+
         btState = BTState.Enter;
     }
 
@@ -204,58 +184,21 @@ public class Player : MonoBehaviour, IPlayer
         GameObject ballOwner = null, preOwner = null;
         while (preOwner == ballOwner && (ballOwner = GM.Ball.GetComponent<IBall>().GetOwner()) != null)
         {
-            var p = Random.Range(0, 100);
-            var disToGate = Vector2.Distance(ballOwner.transform.position, selfGate.transform.position);
-
-            if (IamCloestPlayerToEnemyHolder())
+            if (DisToBirthPlace() > 1.0f)
             {
-                MoveToBall();
-            }
-            else if (disToGate < GateDistanceThreshold)
-            {
-                DefenceCloseToGate(p);
+                MoveToBirthPlace();
             }
             else
             {
-                Defence(p);
+                RandomMove();
             }
+
             yield return new WaitForSeconds(AIUpdateTime);
 
             preOwner = ballOwner;
         }
         btState = BTState.Enter;
     }
-
-    private void DefenceCloseToGate(int p)
-    {
-        if(FindCloestPlayer(Enemies).gameObject == GM.Ball.GetComponent<IBall>().GetOwner())
-        {
-            MoveToBall();
-        }
-        else
-        {
-            RandomMove();
-        }
-    }
-
-    private void Defence(int p)
-    {
-        if (p < 60)
-        {
-            MoveToBall();
-        }
-        else if (p < 80)
-        {
-            var enemy = FindCloestPlayer(Enemies);
-            Vector2 dir = enemy.transform.position - transform.position;
-            SetDir(dir.normalized);
-        }
-        else
-        {
-            RandomMove();
-        }
-    }
-
     void StartDefence()
     {
         btState = BTState.Defencing;
@@ -267,18 +210,18 @@ public class Player : MonoBehaviour, IPlayer
         this.dir = Data.ClampDir(this.transform, dir).normalized;
     }
 
-    
-
     void RandomMove()
     {
         int p = Random.Range(0, 100);
         if (p < 25)
         {
             SetDir(Vector2.up);
-        }else if( p < 50)
+        }
+        else if (p < 50)
         {
             SetDir(Vector2.down);
-        }else if (p < 75)
+        }
+        else if (p < 75)
         {
             SetDir(Forward);
         }
@@ -290,9 +233,36 @@ public class Player : MonoBehaviour, IPlayer
 
     void MoveToGate()
     {
+        
+        if (side == IPlayer.PlayerSide.AI)
+        {
+            int p = Random.Range(0, 100);
+            if (p < 50)
+            {
+                var path = new List<Vector2>
+                {
+                    (Vector2)transform.position + Forward,
+                    gate.transform.position,
+                };
+                BallRef.SetPath(path);
+                BallRef.Shoot();
+                Shoot();
+            }
+        }
+
         Vector2 dir = gate.transform.position - transform.position;
-        var movement = Speed * GM.deltaTime * dir;
-        transform.position = (Vector2)transform.position + movement;
+        SetDir(dir);
+    }
+
+    void MoveToBirthPlace()
+    {
+        Vector2 dir = birthPlace - (Vector2)transform.position;
+        SetDir(dir.normalized);
+    }
+
+    float DisToBirthPlace()
+    {
+        return Vector2.Distance(transform.position, birthPlace);
     }
 
     void MoveToCloestTeamate()
