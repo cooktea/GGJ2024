@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7150836310226509813}
   - component: {fileID: 3045577808883651931}
   - component: {fileID: 5375800415063715534}
+  - component: {fileID: 5896704305074674757}
   m_Layer: 0
   m_Name: StartUp
   m_TagString: Untagged
@@ -32,7 +33,7 @@ Transform:
   m_Children:
   - {fileID: 8701568821801805018}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3045577808883651931
 MonoBehaviour:
@@ -47,10 +48,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   teammates: []
-  ball: {fileID: 938189318090013456, guid: dee984a919caf0149a1d469bdde2598d, type: 3}
+  enemies: []
   TextScore: {fileID: 0}
   TimeRecord: {fileID: 0}
   StartButton: {fileID: 0}
+  GateHuman: {fileID: 0}
+  GateAI: {fileID: 0}
+  LevelInfo:
+    GameTime: 0
+    AIPlayerPosition: []
+    AIPlayerStates: 
+    HumanPlayerPosition: []
+    HumanPlayerStates: 
+    ScoreTarget: 0
+    Level: 0
 --- !u!114 &5375800415063715534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -65,6 +76,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvas: {fileID: 0}
   lineRenderer: {fileID: 7459763279804733421}
+--- !u!114 &5896704305074674757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8174027713794394088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 679304cc1af588146868771a71c2ac17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8707182955520936372
 GameObject:
   m_ObjectHideFlags: 0
