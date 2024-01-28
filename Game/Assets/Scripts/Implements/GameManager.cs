@@ -53,6 +53,7 @@ public class GameManager : MonoBehaviour, IGameManager
         else
         {
             ScoreAI++;
+            SceneManager.LoadScene(LevelInfo.Level);
         }
         TextScore.text = $"{ScoreHuman}";
         Debug.Log($"Human {ScoreHuman}:{ScoreAI} AI");
