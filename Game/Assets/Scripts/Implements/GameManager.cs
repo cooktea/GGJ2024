@@ -21,13 +21,16 @@ public class GameManager : MonoBehaviour, IGameManager
     List<Vector3> enemiesInitPositions = new List<Vector3>();
 
     public List<GameObject> teammates = new List<GameObject>();
-    List<GameObject> enemies = new List<GameObject>();
+    public List<GameObject> enemies = new List<GameObject>();
     GameObject ball;
     public GameObject Ball => ball;
 
     public TextMeshProUGUI TextScore;
     public TextMeshProUGUI TimeRecord;
     public Button StartButton;
+
+    public GameObject GateHuman;
+    public GameObject GateAI;
 
     float leftTime = 0;
     float timeSpeed = 1;
@@ -138,6 +141,7 @@ public class GameManager : MonoBehaviour, IGameManager
         {
             var teammate = Instantiate(prefabTeammate);
             teammates.Add(teammate);
+            teammate.GetComponent<Player>().GM = this;
         }
 
         var prefabEnemy = Resources.Load("Prefabs/Enemy") as GameObject;
@@ -145,6 +149,7 @@ public class GameManager : MonoBehaviour, IGameManager
         {
             var enemy = Instantiate(prefabEnemy);
             enemies.Add(enemy);
+            enemy.GetComponent<Player>().GM = this;
         }
     }
 
@@ -223,4 +228,11 @@ public class GameManager : MonoBehaviour, IGameManager
     {
         timeSpeed = 1;
     }
+
+    #region AI SUPPORT
+    public IPlayer.PlayerSide BallSide()
+    {
+        return Ball.GetComponent<Ball>().GetOwner().GetComponent<IPlayer>().Side;
+    }
+    #endregion
 }
