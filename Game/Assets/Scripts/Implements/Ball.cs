@@ -39,11 +39,11 @@ public class Ball : MonoBehaviour, IBall
     // Update is called once per frame
     void FixedUpdate()
     {
-        DoMove(Time.deltaTime);
+        DoMove(Time.fixedDeltaTime);
 
         if (speed > 0)
         {
-            speed -= Time.deltaTime * 10;
+            speed -= Time.fixedDeltaTime * 10;
             if (speed < 0)
             {
                 speed = 0;
@@ -57,7 +57,7 @@ public class Ball : MonoBehaviour, IBall
         {
             var ballPosition = new Vector2(transform.position.x, transform.position.y);
             var dis = Vector2.SqrMagnitude(ballPosition - nextWayPoint);
-            if (dis <= 1f)
+            if (dis <= 5f)
             {
                 if (wayPoints.TryDequeue(out var wayPoint))
                 {
@@ -87,6 +87,7 @@ public class Ball : MonoBehaviour, IBall
 
     void StateHeld(float dt)
     {
+        speed = 0;
         transform.position = Owner.transform.position;
     }
 
@@ -104,12 +105,15 @@ public class Ball : MonoBehaviour, IBall
 
     public void Shoot()
     {
-        Debug.Log(string.Join(" ", wayPoints.Take(5)));
+        //Debug.Log(string.Join(" ", wayPoints.Take(5)));
         Owner = null;
-        nextWayPoint = wayPoints.Skip(1).First();
-        wayPoints.Dequeue();
-        state = BallState.Free;
-        StartCoroutine(resetContact());
+        if (wayPoints.Count > 1)
+        {
+            wayPoints.Dequeue();
+            nextWayPoint = wayPoints.Dequeue();
+            state = BallState.Free;
+            StartCoroutine(resetContact());
+        }
     }
 
     IEnumerator resetContact()
