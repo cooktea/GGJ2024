@@ -53,6 +53,7 @@ public class GameManager : MonoBehaviour, IGameManager
         else
         {
             ScoreAI++;
+            SceneManager.LoadScene(LevelInfo.Level);
         }
         TextScore.text = $"{ScoreHuman}";
         Debug.Log($"Human {ScoreHuman}:{ScoreAI} AI");
@@ -60,7 +61,7 @@ public class GameManager : MonoBehaviour, IGameManager
         if (ScoreHuman >= LevelInfo.ScoreTarget)
         {
             Debug.Log("Human win!");
-            if (SceneManager.sceneCount >= LevelInfo.Level + 1)
+            if (LevelInfo.Level < 3)
             {
                 SceneManager.LoadScene(LevelInfo.Level + 1);
             }
