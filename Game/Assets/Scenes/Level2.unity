@@ -291,6 +291,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 83785408965021635, guid: 52cd2caf366ef6742a9620b7c12addb1, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 429382858}
     - target: {fileID: 154301718973187272, guid: 52cd2caf366ef6742a9620b7c12addb1, type: 3}
       propertyPath: m_Name
       value: GUI
@@ -384,6 +388,44 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 52cd2caf366ef6742a9620b7c12addb1, type: 3}
+--- !u!223 &1647332541 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 83785408965021635, guid: 52cd2caf366ef6742a9620b7c12addb1, type: 3}
+  m_PrefabInstance: {fileID: 1647332540}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1647332542 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4699220218816779854, guid: 52cd2caf366ef6742a9620b7c12addb1, type: 3}
+  m_PrefabInstance: {fileID: 1647332540}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1647332543 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5871722808175387648, guid: 52cd2caf366ef6742a9620b7c12addb1, type: 3}
+  m_PrefabInstance: {fileID: 1647332540}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1647332544 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1467155574979881605, guid: 52cd2caf366ef6742a9620b7c12addb1, type: 3}
+  m_PrefabInstance: {fileID: 1647332540}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1930458970
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -392,6 +434,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3045577808883651931, guid: de244d1e52a5d234ab3b8d140015085e, type: 3}
+      propertyPath: TextScore
+      value: 
+      objectReference: {fileID: 1647332544}
+    - target: {fileID: 3045577808883651931, guid: de244d1e52a5d234ab3b8d140015085e, type: 3}
+      propertyPath: TimeRecord
+      value: 
+      objectReference: {fileID: 1647332543}
+    - target: {fileID: 3045577808883651931, guid: de244d1e52a5d234ab3b8d140015085e, type: 3}
+      propertyPath: StartButton
+      value: 
+      objectReference: {fileID: 1647332542}
+    - target: {fileID: 5375800415063715534, guid: de244d1e52a5d234ab3b8d140015085e, type: 3}
+      propertyPath: canvas
+      value: 
+      objectReference: {fileID: 1647332541}
     - target: {fileID: 7150836310226509813, guid: de244d1e52a5d234ab3b8d140015085e, type: 3}
       propertyPath: m_RootOrder
       value: 1
