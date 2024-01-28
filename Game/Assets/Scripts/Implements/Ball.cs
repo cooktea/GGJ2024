@@ -106,7 +106,6 @@ public class Ball : MonoBehaviour, IBall
     public void Shoot()
     {
         //Debug.Log(string.Join(" ", wayPoints.Take(5)));
-        Owner = null;
         if (wayPoints.Count > 1)
         {
             wayPoints.Dequeue();
@@ -114,14 +113,16 @@ public class Ball : MonoBehaviour, IBall
             state = BallState.Free;
             StartCoroutine(resetContact());
         }
+        Owner = null;
     }
 
     IEnumerator resetContact()
     {
-        ballCollider.enabled = false;
+        var player = Owner;
+        player.GetComponent<Collider2D>().enabled = false;
         // todo: fix time
         yield return new WaitForSeconds(noContactTime);
-        ballCollider.enabled = true;
+        player.GetComponent<Collider2D>().enabled = true;
     }
 
     public void SetPath(List<Vector2> pathPoints)
