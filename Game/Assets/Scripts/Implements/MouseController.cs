@@ -69,7 +69,9 @@ public class MouseController : MonoBehaviour, IMouseController
 
 	public void OnLeftButtonRelease()
 	{
-		var initialSpeed = 10 + CountLoopsInPath() * 1.5f;
+		var loopCount = CountLoopsInPath();
+		var initialSpeed = 10 + loopCount * 2f;
+		Debug.Log($"Path has { loopCount } loops.");
 
 		var Iball = GM.Ball.GetComponent<IBall>();
 		Iball.SetInitSpeed(initialSpeed);
@@ -83,13 +85,73 @@ public class MouseController : MonoBehaviour, IMouseController
 
 	int CountLoopsInPath()
 	{
-		return 1;
+		var result = 0;
+
+		if (pathPoints.Count > 3)
+		{
+			var startSegmentIndex = 0;
+			var currentSegmentIndex = 2;
+
+			while (startSegmentIndex < pathPoints.Count - 3 && currentSegmentIndex < pathPoints.Count - 2)
+			{
+				var intersectionFound = false;
+				var currentSegmentStart = pathPoints[currentSegmentIndex];
+				var currentSegmentEnd = pathPoints[currentSegmentIndex + 1];
+				for (var i = startSegmentIndex; i < currentSegmentIndex - 2; i++)
+				{
+					var segmentStart = pathPoints[i];
+					var segmentEnd = pathPoints[i + 1];
+					if (CheckSegmentIntersect(currentSegmentStart, currentSegmentEnd, segmentStart, segmentEnd))
+					{
+						result += 1;
+						startSegmentIndex = currentSegmentIndex + 1;
+						currentSegmentIndex = startSegmentIndex + 2;
+						intersectionFound = true;
+						break;
+					}
+				}
+
+				if (!intersectionFound)
+				{
+					currentSegmentIndex += 1;
+				}
+			}
+		}
+
+		return result;
+	}
+
+	bool CheckSegmentIntersect(Vector2 segmentAStart, Vector2 segmentAEnd, Vector2 segmentBStart, Vector2 segmentBEnd)
+	{
+		Vector2 a = segmentAEnd - segmentAStart;
+		Vector2 b = segmentBStart - segmentBEnd;
+		Vector2 c = segmentAStart - segmentBStart;
+
+		float alphaNumerator = b.y * c.x - b.x * c.y;
+		float betaNumerator = a.x * c.y - a.y * c.x;
+		float denominator = a.y * b.x - a.x * b.y;
+
+		if (denominator == 0)
+		{
+			return false;
+		}
+		else if (denominator > 0)
+		{
+			if (alphaNumerator < 0 || alphaNumerator > denominator || betaNumerator < 0 || betaNumerator > denominator)
+			{
+				return false;
+			}
+		}
+		else if (alphaNumerator > 0 || alphaNumerator < denominator || betaNumerator > 0 || betaNumerator < denominator)
+		{
+			return false;
+		}
+		return true;
 	}
 
 	// Start is called before the first frame update
 	void Start()
 	{
-
 		GM = GetComponent<GameManager>();
 	}
 
