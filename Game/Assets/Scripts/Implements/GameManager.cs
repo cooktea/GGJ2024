@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour, IGameManager
 
     float leftTime = 0;
     float timeSpeed = 1;
+    public float deltaTime => Time.deltaTime * timeSpeed;
     State currentState = State.End;
 
     int ScoreHuman = 0;
@@ -214,7 +215,9 @@ public class GameManager : MonoBehaviour, IGameManager
     #region AI SUPPORT
     public IPlayer.PlayerSide BallSide()
     {
-        return Ball.GetComponent<Ball>().GetOwner().GetComponent<IPlayer>().Side;
+        var ballcomp = Ball.GetComponent<Ball>();
+        var owner = ballcomp.GetOwner();
+        return owner.GetComponent<IPlayer>().Side;
     }
     #endregion
 }

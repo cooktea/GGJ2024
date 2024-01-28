@@ -11,14 +11,6 @@ public class Gate : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (side == IPlayer.PlayerSide.Human)
-        {
-            GM.GateHuman = gameObject;
-        }
-        else
-        {
-            GM.GateAI = gameObject;
-        }
     }
 
     // Update is called once per frame

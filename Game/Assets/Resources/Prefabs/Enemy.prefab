@@ -183,6 +183,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52b470299aa9e8148bf613e9d1fd5b5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerState: 5
+  Speed: 60
+  PlayerDistanceThreshold: 2
+  GateDistanceThreshold: 2
+  GM: {fileID: 0}
   side: 1
 --- !u!61 &7600889651595211304
 BoxCollider2D:
