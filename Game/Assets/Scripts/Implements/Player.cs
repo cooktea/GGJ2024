@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 public enum BTState
 {
@@ -23,6 +24,8 @@ public class Player : MonoBehaviour, IPlayer
     [SerializeField] float Speed = 30;
     [SerializeField] float PlayerDistanceThreshold;
     [SerializeField] float GateDistanceThreshold;
+    [SerializeField] Vector2 dir;
+    [SerializeField] float AIUpdateTime = 0.1f;
 
     public bool HoldBall { get; private set; }
     public bool OpponentHoldBall { get; private set; }
@@ -117,6 +120,11 @@ public class Player : MonoBehaviour, IPlayer
         }
     }
 
+    private void FixedUpdate()
+    {
+        Move();
+    }
+
     void StartMoveToBall()
     {
         btState = BTState.TryGetBallFromGround;
@@ -128,8 +136,8 @@ public class Player : MonoBehaviour, IPlayer
         while (GM.Ball.GetComponent<IBall>().GetOwner() == null)
         {
             var dir = GM.Ball.transform.position - transform.position;
-            Move(dir.normalized);
-            yield return null;
+            SetDir(dir.normalized);
+            yield return new WaitForSeconds(AIUpdateTime);
         }
         btState = BTState.Enter;
     }
@@ -147,42 +155,26 @@ public class Player : MonoBehaviour, IPlayer
             // -- 与对方所有球员距离都大于X时
             if (DisToCloestEnemy() > PlayerDistanceThreshold)
             {
-                int p = Random.Range(0, 100);
-                if (p < 40)
-                {
-                    Move(Forward);
-                }
-                else if (p < 60)
-                {
-                    Move(Backward);
-                }
-                else if (p < 80)
-                {
-                    Move(Vector2.up);
-                }
-                else
-                {
-                    Move(Vector2.up);
-                }
+                MoveToGate();
             }
             else //-- 与对方任一球员距离小于等于X时
             {
                 int p = Random.Range(0, 100);
                 if (p < 20)
                 {
-                    Move(Forward);
+                    SetDir(Forward);
                 }
                 else if (p < 40)
                 {
-                    Move(Backward);
+                    SetDir(Backward);
                 }
                 else if (p < 60)
                 {
-                    Move(Vector2.up);
+                    SetDir(Vector2.up);
                 }
                 else if (p < 80)
                 {
-                    Move(Vector2.up);
+                    SetDir(Vector2.up);
                 }
                 else if (p < 90)
                 {
@@ -193,7 +185,7 @@ public class Player : MonoBehaviour, IPlayer
                     MoveToCloestTeamate();
                 }
             }
-            yield return null;
+            yield return new WaitForSeconds(AIUpdateTime);
         }
 
         btState = BTState.Enter;
@@ -206,9 +198,9 @@ public class Player : MonoBehaviour, IPlayer
         {
             var targetPos = GM.Ball.GetComponent<IBall>().GetOwner().transform.position;
             var dir = targetPos - transform.position;
-            Move(dir.normalized);
+            SetDir(dir.normalized);
 
-            yield return null;
+            yield return new WaitForSeconds(AIUpdateTime);
         }
         btState = BTState.Enter;
     }
@@ -229,38 +221,20 @@ public class Player : MonoBehaviour, IPlayer
             {
                 Defence(p);
             }
-            yield return null;
+            yield return new WaitForSeconds(AIUpdateTime);
         }
 
     }
 
     private void DefenceCloseToGate(int p)
     {
-        if (p < 20)
+        if(FindCloestPlayer(Enemies).gameObject == GM.Ball.GetComponent<IBall>().GetOwner())
         {
             MoveToBall();
         }
-        else if (p < 40)
-        {
-            var enemy = FindCloestPlayer(Enemies);
-            Vector2 dir = enemy.transform.position - transform.position;
-            Move(dir.normalized);
-        }
-        else if (p < 60)
-        {
-            Move(Vector2.up);
-        }
-        else if (p < 80)
-        {
-            Move(Vector2.down);
-        }
-        else if (p < 90)
-        {
-            Move(Forward);
-        }
         else
         {
-            Move(Backward);
+            RandomMove();
         }
     }
 
@@ -274,23 +248,23 @@ public class Player : MonoBehaviour, IPlayer
         {
             var enemy = FindCloestPlayer(Enemies);
             Vector2 dir = enemy.transform.position - transform.position;
-            Move(dir.normalized);
+            SetDir(dir.normalized);
         }
         else if (p < 60)
         {
-            Move(Vector2.up);
+            SetDir(Vector2.up);
         }
         else if (p < 80)
         {
-            Move(Vector2.down);
+            SetDir(Vector2.down);
         }
         else if (p < 90)
         {
-            Move(Forward);
+            SetDir(Forward);
         }
         else
         {
-            Move(Backward);
+            SetDir(Backward);
         }
     }
 
@@ -300,7 +274,7 @@ public class Player : MonoBehaviour, IPlayer
         coroutine = StartCoroutine(Defence());
     }
 
-    void Move(Vector2 dir)
+    void SetDir(Vector2 dir)
     {
         if (transform.position.y >= UpperBound)
         {
@@ -310,9 +284,33 @@ public class Player : MonoBehaviour, IPlayer
         {
             dir.y = Mathf.Abs(dir.y);
         }
+        this.dir = dir.normalized;
+        
+    }
 
+    void Move()
+    {
         var movement = Speed * GM.deltaTime * dir;
         transform.position = (Vector2)transform.position + movement;
+    }
+
+    void RandomMove()
+    {
+        int p = Random.Range(0, 100);
+        if (p < 25)
+        {
+            SetDir(Vector2.up);
+        }else if( p < 50)
+        {
+            SetDir(Vector2.down);
+        }else if (p < 75)
+        {
+            SetDir(Forward);
+        }
+        else
+        {
+            SetDir(Backward);
+        }
     }
 
     void MoveToGate()
@@ -328,7 +326,7 @@ public class Player : MonoBehaviour, IPlayer
         if (t != null)
         {
             Vector2 dir = t.transform.position - transform.position;
-            Move(dir.normalized);
+            SetDir(dir.normalized);
         }
     }
 
@@ -336,12 +334,12 @@ public class Player : MonoBehaviour, IPlayer
     {
         var t = FindCloestPlayer(Enemies);
         Vector2 dir = transform.position - t.transform.position;
-        Move(dir.normalized);
+        SetDir(dir.normalized);
     }
 
     Player FindCloestPlayer(Player[] players)
     {
-        if (players == null)
+        if (players == null || players.Length == 0)
         {
             return null;
         }
