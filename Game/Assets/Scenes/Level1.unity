@@ -1303,12 +1303,10 @@ MonoBehaviour:
   GateAI: {fileID: 1809817805}
   LevelInfo:
     GameTime: 120
-    AIPlayerPosition:
-    - {x: -2, y: 0}
+    AIPlayerPosition: []
     AIPlayerStates: 
     HumanPlayerPosition:
-    - {x: 3, y: -1}
-    - {x: 3, y: 1}
+    - {x: -3, y: 0}
     HumanPlayerStates: 
     ScoreTarget: 1
     Level: 1
