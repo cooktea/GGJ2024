@@ -69,14 +69,21 @@ public class MouseController : MonoBehaviour, IMouseController
 
 	public void OnLeftButtonRelease()
 	{
+		var initialSpeed = 10 + CountLoopsInPath() * 1.5f;
+
 		var Iball = GM.Ball.GetComponent<IBall>();
-		Iball.SetInitSpeed(10);
+		Iball.SetInitSpeed(initialSpeed);
 		Iball.SetPath(pathPoints);
 		Iball.Shoot();
 
 		lineRenderer.positionCount = 0;
 		lineRenderer.SetPositions(new Vector3[] { });
 		lineRenderer.enabled = false;
+	}
+
+	int CountLoopsInPath()
+	{
+		return 1;
 	}
 
 	// Start is called before the first frame update

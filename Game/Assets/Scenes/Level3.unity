@@ -346,7 +346,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3045577808883651931, guid: de244d1e52a5d234ab3b8d140015085e, type: 3}
       propertyPath: LevelInfo.AIPlayerPosition.Array.data[0].x
-      value: -2
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3045577808883651931, guid: de244d1e52a5d234ab3b8d140015085e, type: 3}
       propertyPath: LevelInfo.AIPlayerPosition.Array.data[0].y
@@ -354,7 +354,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3045577808883651931, guid: de244d1e52a5d234ab3b8d140015085e, type: 3}
       propertyPath: LevelInfo.AIPlayerPosition.Array.data[1].x
-      value: -2
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3045577808883651931, guid: de244d1e52a5d234ab3b8d140015085e, type: 3}
       propertyPath: LevelInfo.AIPlayerPosition.Array.data[1].y
@@ -362,7 +362,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3045577808883651931, guid: de244d1e52a5d234ab3b8d140015085e, type: 3}
       propertyPath: LevelInfo.AIPlayerPosition.Array.data[2].x
-      value: -4
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3045577808883651931, guid: de244d1e52a5d234ab3b8d140015085e, type: 3}
       propertyPath: LevelInfo.AIPlayerPosition.Array.data[2].y
@@ -370,7 +370,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3045577808883651931, guid: de244d1e52a5d234ab3b8d140015085e, type: 3}
       propertyPath: LevelInfo.HumanPlayerPosition.Array.data[0].x
-      value: 2
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 3045577808883651931, guid: de244d1e52a5d234ab3b8d140015085e, type: 3}
       propertyPath: LevelInfo.HumanPlayerPosition.Array.data[0].y
@@ -378,7 +378,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3045577808883651931, guid: de244d1e52a5d234ab3b8d140015085e, type: 3}
       propertyPath: LevelInfo.HumanPlayerPosition.Array.data[1].x
-      value: 2
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 3045577808883651931, guid: de244d1e52a5d234ab3b8d140015085e, type: 3}
       propertyPath: LevelInfo.HumanPlayerPosition.Array.data[1].y
