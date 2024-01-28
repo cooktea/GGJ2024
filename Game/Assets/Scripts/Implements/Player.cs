@@ -33,6 +33,7 @@ public class Player : MonoBehaviour, IPlayer
     public IBall BallRef { get; private set; }
     public GameManager GM;
     Gate gate;
+    Gate selfGate;
 
 
     [SerializeField] IPlayer.PlayerSide side;
@@ -52,9 +53,11 @@ public class Player : MonoBehaviour, IPlayer
         {
             case IPlayer.PlayerSide.Human:
                 gate = GM.GateAI.GetComponent<Gate>();
+                selfGate = GM.GateHuman.GetComponent<Gate>();
                 break;
             default:
                 gate = GM.GateHuman.GetComponent<Gate>();
+                selfGate = GM.GateAI.GetComponent<Gate>();
                 break;
         }
     }
@@ -98,28 +101,19 @@ public class Player : MonoBehaviour, IPlayer
             if (HoldBall)
             {
                 BeginAttackWithBall();
+                return;
             }
-            else
+
+
+            if (GM.Ball.GetComponent<IBall>().GetOwner() == null)
             {
-                if (GM.Ball.GetComponent<IBall>().GetOwner() == null)
-                {
-                    StartMoveToBall();
-                }
-                else if (GM.BallSide() != side)
-                {
-                    //if (DisToBallOwner() < PlayerDistanceThreshold)
-                    //{
-                    //    AttackBallOwner();
-                    //}
-                    //else
-                    {
-                        StartDefence();
-                    }
-                }
-                else
-                {
-                    StartDefence();
-                }
+                StartMoveToBall();
+                return;
+            }
+
+            if (GM.BallSide() != side)
+            {
+                StartDefence();
             }
         }
     }
@@ -207,20 +201,103 @@ public class Player : MonoBehaviour, IPlayer
     }
 
 
-    void AttackBallOwner()
+    IEnumerator AttackBallOwner()
     {
-        var targetPos = GM.Ball.GetComponent<IBall>().GetOwner().transform.position;
-        var dir = targetPos - transform.position;
-        Move(dir.normalized);
+        while (GM.Ball.GetComponent<IBall>().GetOwner() != null)
+        {
+            var targetPos = GM.Ball.GetComponent<IBall>().GetOwner().transform.position;
+            var dir = targetPos - transform.position;
+            Move(dir.normalized);
+
+            yield return null;
+        }
+        btState = BTState.Enter;
     }
 
     IEnumerator Defence()
     {
-        yield return null;
+        GameObject ballOwner;
+        while ((ballOwner = GM.Ball.GetComponent<IBall>().GetOwner()) != null)
+        {
+            var p = Random.Range(0, 100);
+            var disToGate = Vector2.Distance(ballOwner.transform.position, selfGate.transform.position);
+
+            if (disToGate < this.GateDistanceThreshold)
+            {
+                DefenceCloseToGate(p);
+            }
+            else
+            {
+                Defence(p);
+            }
+            yield return null;
+        }
+
+    }
+
+    private void DefenceCloseToGate(int p)
+    {
+        if (p < 20)
+        {
+            MoveToBall();
+        }
+        else if (p < 40)
+        {
+            var enemy = FindCloestPlayer(Enemies);
+            Vector2 dir = enemy.transform.position - transform.position;
+            Move(dir.normalized);
+        }
+        else if (p < 60)
+        {
+            Move(Vector2.up);
+        }
+        else if (p < 80)
+        {
+            Move(Vector2.down);
+        }
+        else if (p < 90)
+        {
+            Move(Forward);
+        }
+        else
+        {
+            Move(Backward);
+        }
+    }
+
+    private void Defence(int p)
+    {
+        if (p < 20)
+        {
+            MoveToBall();
+        }
+        else if (p < 40)
+        {
+            var enemy = FindCloestPlayer(Enemies);
+            Vector2 dir = enemy.transform.position - transform.position;
+            Move(dir.normalized);
+        }
+        else if (p < 60)
+        {
+            Move(Vector2.up);
+        }
+        else if (p < 80)
+        {
+            Move(Vector2.down);
+        }
+        else if (p < 90)
+        {
+            Move(Forward);
+        }
+        else
+        {
+            Move(Backward);
+        }
     }
 
     void StartDefence()
     {
+        btState = BTState.Defencing;
         coroutine = StartCoroutine(Defence());
     }
 
@@ -235,22 +312,25 @@ public class Player : MonoBehaviour, IPlayer
             dir.y = Mathf.Abs(dir.y);
         }
 
-        var movement = Speed * GM.deltaTime * Time.deltaTime * dir;
+        var movement = Speed * GM.deltaTime * dir;
         transform.position = (Vector2)transform.position + movement;
     }
 
     void MoveToGate()
     {
         Vector2 dir = gate.transform.position - transform.position;
-        var movement = Speed * GM.deltaTime * Time.deltaTime * dir;
+        var movement = Speed * GM.deltaTime * dir;
         transform.position = (Vector2)transform.position + movement;
     }
 
     void MoveToCloestTeamate()
     {
         var t = FindCloestPlayer(Teamates);
-        Vector2 dir = t.transform.position - transform.position;
-        Move(dir.normalized);
+        if (t != null)
+        {
+            Vector2 dir = t.transform.position - transform.position;
+            Move(dir.normalized);
+        }
     }
 
     void MoveAwayToCloestEnemy()
@@ -262,9 +342,14 @@ public class Player : MonoBehaviour, IPlayer
 
     Player FindCloestPlayer(Player[] players)
     {
+        if (players == null)
+        {
+            return null;
+        }
+
         Player p = players[0];
         float mindis = float.MaxValue;
-        for (int i = 0; i < players.Length; i++)
+        for (int i = 1; i < players.Length; i++)
         {
             var dis = Vector2.Distance(transform.position, players[i].transform.position);
             if (dis < mindis)
@@ -314,10 +399,26 @@ public class Player : MonoBehaviour, IPlayer
 
     void GetEnemyList()
     {
-        Enemies = GM.enemies.Select(obj => obj.GetComponent<Player>()).Where(p => p != this).ToArray();
+        switch (side)
+        {
+            case IPlayer.PlayerSide.Human:
+                Enemies = GM.enemies.Select(obj => obj.GetComponent<Player>()).Where(p => p != this).ToArray();
+                break;
+            case IPlayer.PlayerSide.AI:
+                Enemies = GM.teammates.Select(obj => obj.GetComponent<Player>()).Where(p => p != this).ToArray();
+                break;
+        }
     }
     void GetTeamateList()
     {
-        Teamates = GM.teammates.Select(obj => obj.GetComponent<Player>()).Where(p => p != this).ToArray();
+        switch (side)
+        {
+            case IPlayer.PlayerSide.AI:
+                Teamates = GM.enemies.Select(obj => obj.GetComponent<Player>()).Where(p => p != this).ToArray();
+                break;
+            case IPlayer.PlayerSide.Human:
+                Teamates = GM.teammates.Select(obj => obj.GetComponent<Player>()).Where(p => p != this).ToArray();
+                break;
+        }
     }
 }
