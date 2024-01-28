@@ -1,4 +1,3 @@
-using Codice.Client.IssueTracker;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
