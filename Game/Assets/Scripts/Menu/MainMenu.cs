@@ -13,7 +13,7 @@ public class MainMenu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        stages = SceneManager.sceneCount;
+        stages = 3;
     }
 
     // Update is called once per frame
