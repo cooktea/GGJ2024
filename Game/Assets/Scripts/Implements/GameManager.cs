@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour, IGameManager
         if (ScoreHuman >= LevelInfo.ScoreTarget)
         {
             Debug.Log("Human win!");
-            if (SceneManager.sceneCount >= LevelInfo.Level + 1)
+            if (LevelInfo.Level < 3)
             {
                 SceneManager.LoadScene(LevelInfo.Level + 1);
             }
