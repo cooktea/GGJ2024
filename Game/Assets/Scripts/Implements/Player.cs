@@ -33,9 +33,8 @@ public class Player : MonoBehaviour, IPlayer
     public IBall BallRef { get; private set; }
     public GameManager GM;
     Gate gate;
-    Gate selfGate;
 
-
+    [SerializeField] public float getBall = 0.0f;
     [SerializeField] IPlayer.PlayerSide side;
     Coroutine coroutine;
     Vector2 Forward => new Vector2(gate.transform.position.x - transform.position.x, 0).normalized;
@@ -43,6 +42,8 @@ public class Player : MonoBehaviour, IPlayer
 
     Player[] Enemies;
     Player[] Teamates;
+
+    
 
     private void Start()
     {
@@ -53,11 +54,9 @@ public class Player : MonoBehaviour, IPlayer
         {
             case IPlayer.PlayerSide.Human:
                 gate = GM.GateAI.GetComponent<Gate>();
-                selfGate = GM.GateHuman.GetComponent<Gate>();
                 break;
             default:
                 gate = GM.GateHuman.GetComponent<Gate>();
-                selfGate = GM.GateAI.GetComponent<Gate>();
                 break;
         }
         btState = BTState.Enter;
@@ -237,7 +236,7 @@ public class Player : MonoBehaviour, IPlayer
         if (side == IPlayer.PlayerSide.AI)
         {
             int p = Random.Range(0, 100);
-            if (p < 50)
+            if (p < 15)
             {
                 var path = new List<Vector2>
                 {
@@ -251,7 +250,7 @@ public class Player : MonoBehaviour, IPlayer
         }
 
         Vector2 dir = gate.transform.position - transform.position;
-        SetDir(dir);
+        SetDir(dir.normalized);
     }
 
     void MoveToBirthPlace()
@@ -367,5 +366,19 @@ public class Player : MonoBehaviour, IPlayer
     bool IamCloestPlayerToEnemyHolder()
     {
         return GM.CloestPlayerToEnemyHolder() == this as IPlayer;
+    }
+
+    public void OnGetBallFailed()
+    {
+        btState = BTState.Enter;
+        StartCoroutine(ResetCollider());
+    }
+
+    IEnumerator ResetCollider()
+    {
+        var c = GetComponent<Collider2D>();
+        c.enabled = false;
+        yield return new WaitForSeconds(0.5f);
+        c.enabled = true;
     }
 }

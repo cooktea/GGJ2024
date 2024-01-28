@@ -71,16 +71,41 @@ public class Ball : MonoBehaviour, IBall
         transform.position += Data.ClampDir(transform, dir) * speed * dt;
     }
 
-    
+
 
     void StateFree(float dt)
     {
         if (this.playersInCollied.Count > 0)
         {
-            var p = this.playersInCollied[0];
-            p.GetComponent<IPlayer>().OnCatchBall(gameObject);
-            state = BallState.Held;
-            Owner = p;
+            Player held = null;
+
+            foreach (var obj in playersInCollied)
+            {
+                var p = obj.GetComponent<Player>();
+                p.getBall += Random.Range(2.5f, 3.5f);
+                if (p.getBall >= 10.0f)
+                {
+                    held = p;
+                    break;
+                }
+            }
+
+
+            if (held != null)
+            {
+                var p = this.playersInCollied[0];
+                held.OnCatchBall(gameObject);
+                state = BallState.Held;
+                Owner = held.gameObject;
+                Debug.Log($"{held.name} try get ball success!");
+
+                playersInCollied.Remove(held.gameObject);
+                foreach (var obj in playersInCollied)
+                {
+                    var f = obj.GetComponent<Player>();
+                    f.OnGetBallFailed();
+                }
+            }
         }
         else
         {
