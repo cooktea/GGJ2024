@@ -1,3 +1,4 @@
+using Codice.Client.IssueTracker;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -218,6 +219,33 @@ public class GameManager : MonoBehaviour, IGameManager
         var ballcomp = Ball.GetComponent<Ball>();
         var owner = ballcomp.GetOwner();
         return owner.GetComponent<IPlayer>().Side;
+    }
+
+    public IPlayer CloestPlayerToEnemyHolder()
+    {
+        var side = BallSide();
+        List<GameObject> playerList = null;
+        switch (side)
+        {
+            case IPlayer.PlayerSide.Human:
+                playerList = enemies;
+                break;
+            case IPlayer.PlayerSide.AI:
+                playerList = teammates;
+                break;
+        }
+
+        IPlayer p = null;
+        float min = float.MaxValue;
+        for (var i = 0; i < playerList.Count; i++)
+        {
+            var dis = Vector2.Distance(Ball.transform.position, playerList[i].transform.position);
+            if (min > dis)
+            {
+                p = playerList[i].GetComponent<IPlayer>();
+            }
+        }
+        return p;
     }
     #endregion
 }
