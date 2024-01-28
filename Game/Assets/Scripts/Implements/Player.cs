@@ -1,23 +1,22 @@
 ﻿using System.Collections;
 using System.Linq;
 using UnityEngine;
-using static Codice.Client.Commands.WkTree.WorkspaceTreeNode;
+
+public enum BTState
+{
+	AttackingWithBall,
+	TryGetBallFromGround,
+	TryGetBallFromEnemy,
+	Defencing,
+	Roaming,
+	Enter,
+}
 
 public class Player : MonoBehaviour, IPlayer
 {
     float GateToMiddle = 7.4f;
     float UpperBound = 3.9f;
     float Lowerbound = -3.9f;
-
-    enum BTState
-    {
-        AttackingWithBall,
-        TryGetBallFromGround,
-        TryGetBallFromEnemy,
-        Defencing,
-        Roaming,
-        Enter,
-    }
 
     [Header("AI")]
     [SerializeField] BTState btState = BTState.Enter;
